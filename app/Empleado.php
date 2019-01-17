@@ -77,7 +77,7 @@ class Empleado extends Model implements ToArray, WithMultipleSheets
     {
         //si el empleado esta eliminado con softdelete 
         //o el gerente es nulo (tambien eliminado con softdelete el empleado no es valido)
-        return !$this->trashed() && !is_null($this->gerente);
+        return !($this->trashed() || is_null($this->gerente));
     }
 
     /********************************************************************/

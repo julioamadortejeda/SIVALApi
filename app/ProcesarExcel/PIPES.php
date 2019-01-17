@@ -24,14 +24,16 @@ class PIPES
 			$fecha_captura = PIPES::transformDate($row[0]);
 
 			if (is_null($fecha_captura)) 
-				return array(false,  $row[0]);
+				return array(false, sprintf(trans('mensajes.errorFechaCaptura'), $row[0]));
 
-			if (!is_numeric($row[3]) || $row[3] <= 0 || is_null($row[3])) 
-				return array(false, sprintf(trans('mensajes.errorFolioInvalido'), $row[3]));
+			$id_folio = trim($row[3]);
 
-			$folio = Folio::find($row[3]) ?? new Folio();
+			if (is_null($id_folio) ||!is_numeric($id_folio) || $id_folio <= 0) 
+				return array(false, sprintf(trans('mensajes.errorFolioInvalido'), $id_folio));
 
-			$folio->id_folio = $row[3];
+			$folio = Folio::find($id_folio) ?? new Folio();
+
+			$folio->id_folio = $id_folio;
 			$folio->fecha_captura = $fecha_captura;
 			$folio->telefono_asignado = $row[14];
 			$folio->telefono_portado = $row[15];
@@ -39,7 +41,6 @@ class PIPES
 			$folio->clave_empresa = $row[27];
 			$folio->nombre_empresa = $row[28];
 			$folio->facturacion_terceros = $row[29];
-
 			$folio->trafico_voz = $row[32];
 			$folio->voz_entrante = $row[33];
 			$folio->voz_saliente = $row[34];
@@ -62,14 +63,19 @@ class PIPES
 			$folio->respuesta_telmex = str_replace("'", "", $row[12]);
 			$folio->motivo_rechazo = str_replace("'", "", $row[13]);
 
-			if(!is_numeric($row[2]) && $row[2] <= 0){
-				return array(false, sprintf(trans('mensajes.errorNumeroEmpleado'), $row[2]));
+			$id_empleado = trim($row[2]);
+			if(!is_numeric($id_empleado) && $id_empleado <= 0){
+				return array(false, sprintf(trans('mensajes.errorNumeroEmpleado'), $id_empleado));
 			}
 
-			$empleado = Empleado::find($row[2]);
+			$empleado = Empleado::find($id_empleado);
 
-			if ($empleado == null)
-				return array(false, sprintf(trans('mensajes.errorEmpleadoNoExiste'), $row[2]));
+			if (is_null($empleado))
+				return array(false, sprintf(trans('mensajes.errorEmpleadoNoExiste'), $id_empleado));
+			
+			if (!$empleado->empleadoValido()) {
+				return array(false, sprintf(trans('mensajes.errorEmpleadoNoValido'), $id_empleado));
+			}
 
 			$folio->id_empleado = $empleado->id_empleado;
 			$folio->id_estatus_siac = PIPES::asignarCatalogo(EstatusSIAC::class, $row[4])->id_estatus_siac ?? null;;
@@ -88,15 +94,16 @@ class PIPES
 			}
 
 			$folio->id_servicio = PIPES::asignarCatalogo(Servicio::class, $servicio)->id_servicio;
-
+			$numero_orden = trim($row[16]);
+			
 			//folio sin orden de servicio
-			if (is_null($row[16]) || strlen(trim($row[16])) == 0 || $row[16] == 0) {
+			if (is_null($numero_orden) || strlen(trim($numero_orden)) == 0 || $numero_orden == 0) {
 				$folio->save();
 				return array(true, trans('mensajes.folioSinOrden'));
 			}
 
-			if (!is_null($row[16]) && !is_numeric($row[16]))
-				return array(false, sprintf(trans('mensajes.errorOrdenServicio'), $row[16]));
+			if (!is_null($numero_orden) && !is_numeric($numero_orden))
+				return array(false, sprintf(trans('mensajes.errorOrdenServicio'), $numero_orden));
 
 			$folio->save();
 
@@ -104,7 +111,7 @@ class PIPES
 			para esa orden con el folio, si es asi se procede a guardar la orden, si no, se crea*/
 			$folioOrden = null;
 			$orden = new Orden();
-			$idsOrdenes = Orden::where('numero_orden', $row[16])->pluck('id_orden')->toArray();
+			$idsOrdenes = Orden::where('numero_orden', $numero_orden)->pluck('id_orden')->toArray();
 
 			if (!empty($idsOrdenes)) {
 				$idsFoliosOrdenes = FolioOrden::where('id_folio', $folio->id_folio)->pluck('id_orden')->toArray();
@@ -118,7 +125,7 @@ class PIPES
 				}
 			}
 
-			$orden->numero_orden = $row[16];
+			$orden->numero_orden = $numero_orden;
 			$orden->fecha_orden = PIPES::transformDate($row[17]);
 			$orden->estatus_orden_sigla = $row[21];
 			$orden->estatus_orden = $row[22];
@@ -141,17 +148,14 @@ class PIPES
 
 			return array(true, trans('mensajes.folioGuardado'));
 
-		} catch(\ErrorException $e) {
-			//throw $e;
-			
-			return array(false, $e->getMessage(). '------------Error. ');
+		} catch(\Exception $e) {		
+			return array(false, $e->getMessage(). ' *Error*');
 		}
 	}
 
 	/******************************************************************
 	//Asignacion o Creacion de catalogos
 	*******************************************************************/
-
 	private static function asignarCatalogo($modelo, $nombre = '')
 	{
 		try 
@@ -160,15 +164,13 @@ class PIPES
 				return null;
 
 			$objetoModelo = $modelo::where('nombre', $nombre)->first();
-			if ($objetoModelo == null) 
-			{
+			if (is_null($objetoModelo)) 
 				$objetoModelo = $modelo::create(['nombre' => $nombre]);
-			}
 
 			$objetoModelo->save();
 			return $objetoModelo;
 			
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return null;			
 		}
 	}
@@ -187,7 +189,7 @@ class PIPES
 				return null;
 			//return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
 		} 
-		catch (\ErrorException $e) {
+		catch (\Exception $e) {
 			return null;
             //return \Carbon\Carbon::createFromFormat($format, $value);
 		}

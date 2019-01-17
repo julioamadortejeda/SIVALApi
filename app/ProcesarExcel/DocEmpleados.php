@@ -36,7 +36,6 @@ class DocEmpleados
 				}
 				
 				if ($empleado->isDirty()) {
-					//$empleado->fecha_modificacion = date(trans('mensajes.DATE_FORMAT'));
 					$empleado->save();
 				}
 			}
@@ -50,10 +49,10 @@ class DocEmpleados
 				$empleado = Empleado::create($campos);
 			}
 
-			return array(true, 'empleadoGuardado');
+			return array(true, trans('mensajes.empleadoGuardado'));
 			
 		} 
-		catch (Exception $e) 
+		catch (\Exception $e) 
 		{
 			return array(false, trans('mensajes.errorProcesarEmpleado'));
 		}

@@ -40,7 +40,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'firma:X-Application-Name',
-            'throttle:3,1',
+            'throttle:60,1',
             'bindings',
         ],
     ];

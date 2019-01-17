@@ -39,7 +39,7 @@ class UserFolioController extends ApiController
     public function show(User $user, Folio $folio)
     {
         if (!$user->esAdministrador()) {
-            if ($user->esValidacion()) {
+            if (!$user->esValidacion()) {
                 if ($folio->id_empleado != $user->id_empleado && $folio->id_empleado != $user->empleado->id_gerente) {
                     return $this->errorResponse("El folio no pertenece al empleado ($user->id_empleado " 
                                                 . $user->empleado->nombre . ")", 409);

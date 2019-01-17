@@ -230,8 +230,8 @@ class Folio extends Model implements ToArray, WithMultipleSheets
             $linea++;
         }
 
-        if(!$errores->isEmpty())
-            dd($errores);
+        // if(!$errores->isEmpty())
+        //     dd($errores);
 
         return $errores;
     }

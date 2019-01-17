@@ -51,7 +51,7 @@ class FolioOrden extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ordene()
+    public function orden()
     {
         return $this->belongsTo(Orden::class, 'id_orden', 'id_orden');
     }
