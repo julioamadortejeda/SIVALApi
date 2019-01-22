@@ -5,10 +5,11 @@ namespace App;
 use App\Empleado;
 use App\TipoUsuario;
 use App\Scopes\UserScope;
+use App\Transformers\UserTransformer;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id_usuario
@@ -27,6 +28,7 @@ class User extends Authenticatable
     private const USER_ADMINISTRADOR = 'administrador';
     use Notifiable, SoftDeletes;
     
+    public $transformer = UserTransformer::class;
     const CREATED_AT = 'fecha_creacion';
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';

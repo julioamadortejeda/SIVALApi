@@ -10,7 +10,7 @@ use App\Tienda;
 use App\Campana;
 use App\Paquete;
 use App\Division;
-use App\Empleado;
+use App\Empleado; 
 use App\Servicio;
 use App\FolioOrden;
 use App\EstatusSIAC;

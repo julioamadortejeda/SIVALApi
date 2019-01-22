@@ -38,12 +38,12 @@ Route::post('empleados', 'Empleado\EmpleadoController@import');
 /*
 	Paquetes
 */
-Route::resource('paquetes', 'Paquete\PaqueteController', ['except' => ['create','edit','store']]);
+Route::resource('paquetes', 'Paquete\PaqueteController', ['only' => ['index']]);
 
 /*
 	Servicios
 */
-Route::resource('servicios', 'Servicio\ServicioController', ['except' => ['create','edit']]);
+Route::resource('servicios', 'Servicio\ServicioController', ['only' => ['index']]);
 
 /*
 	Usuarios
@@ -54,7 +54,7 @@ Route::resource('users.folios', 'User\UserFolioController', ['except' => ['creat
 /*
 	Tipos Usuarios
 */
-Route::resource('tiposusuarios', 'TipoUsuario\TipoUsuarioController', ['except' => ['create', 'edit']]);
+Route::resource('tiposusuarios', 'TipoUsuario\TipoUsuarioController', ['except' => ['create', 'edit', 'show']]);
 
 
 /*
