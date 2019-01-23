@@ -15,11 +15,21 @@ class UserTransformer extends TransformerAbstract
     public function transform(User $user)
     {
         return [
-            'clave' => (int) $user->id_usuario,
-            'nombre' => (string) $user->nombre,
-            'empleado' => [ 'clave' => $user->id_empleado,
-                            'nombre' => $user->empleado->nombre                        
-            ]
+            'clave' => (int)$user->id_usuario,
+            'nombre' => (string)$user->nombre,
+            'empleado' => is_null($user->empleado) ? null : [ 
+                'clave' => (int)$user->id_empleado,
+                'nombre' => (string)$user->empleado->nombre,
+                'RFC' => (string)$user->empleado->rfc,
+                'estatus' => (string)$user->empleado->estatus,                      
+            ],
+            'categoria' => is_null($user->tipo_usuario) ? null : [ 
+                'clave' => (int)$user->tipo_usuario->id_tipo_usuario,
+                'nombre' => (string)$user->tipo_usuario->nombre
+            ],
+            'fechaCreacion' => (string)$user->fecha_creacion,
+            'fechaActualizacion' => (string)$user->fecha_modificacion,
+            'fechaEliminacion' => isset($user->fecha_eliminacion) ? (string)$user->fecha_eliminacion : null
         ];
     }
 }

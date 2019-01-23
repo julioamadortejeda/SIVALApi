@@ -26,13 +26,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     private const USER_ADMINISTRADOR = 'administrador';
+    private const USER_VALIDACION = 'validacion';
     use Notifiable, SoftDeletes;
     
-    public $transformer = UserTransformer::class;
     const CREATED_AT = 'fecha_creacion';
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
-    protected $hidden = ['Password', 'fecha_creacion', 'fecha_modificacion', 'fecha_eliminacion'];
+    protected $hidden = ['password', 'fecha_creacion', 'fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = UserTransformer::class;
     /**
      * The table associated with the model.
      * 
@@ -69,18 +70,19 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tipoUsuario()
+    public function tipo_usuario()
     {
         return $this->belongsTo(TipoUsuario::class, 'id_tipo_usuario', 'id_tipo_usuario');
     }
 
     public function esAdministrador()
     {
-        return strtolower($this->tipoUsuario->nombre) == User::USER_ADMINISTRADOR;
+        return strtolower($this->tipo_usuario->nombre) == User::USER_ADMINISTRADOR;
     }
 
     public function esValidacion()
     {
-        return is_null($this->id_empleado);
+        return strtolower($this->tipo_usuario->nombre) == User::USER_VALIDACION;
+        //return is_null($this->id_empleado) && !$this->esAdministrador();
     }
 }

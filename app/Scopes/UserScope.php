@@ -10,6 +10,6 @@ class UserScope implements Scope
 {
 	public function apply(Builder $builder, Model $model)
 	{
-		$builder->with(['empleado', 'tipoUsuario']);
+		$builder->with(['empleado', 'tipo_usuario']);
 	}
 }

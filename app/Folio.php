@@ -19,6 +19,7 @@ use App\FolioTelefono;
 use App\LineaContratada;
 use App\Scopes\FolioScope;
 use App\ProcesarExcel\PIPES;
+use App\Transformers\FolioTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -97,6 +98,7 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
     protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = FolioTransformer::class;
 
     /**
      * @var array
@@ -144,7 +146,7 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function estatussiac()
+    public function estatus_siac()
     {
         return $this->belongsTo(EstatusSIAC::class, 'id_estatus_siac', 'id_estatus_siac');
     }
@@ -160,7 +162,7 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function lineacontratada()
+    public function linea_contratada()
     {
         return $this->belongsTo(LineaContratada::class, 'id_linea_contratada', 'id_linea_contratada');
     }

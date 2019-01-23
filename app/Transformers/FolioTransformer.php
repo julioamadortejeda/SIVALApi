@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Transformers;
+
+use App\Folio;
+use League\Fractal\TransformerAbstract;
+
+class FolioTransformer extends TransformerAbstract
+{
+    /**
+     * A Fractal transformer.
+     *
+     * @return array
+     */
+    public function transform(Folio $folio)
+    {
+        return [
+            'folio' => (int)$folio->id_folio,
+            'fechaCaptura' => (string)$folio->fecha_captura,
+            'telefonoAsignado' => (string)$folio->telefono_asignado,
+            'telefonoPortado' => (string)$folio->telefono_portado,
+            'fechaCambioEstatus' => (string)$folio->fecha_cambio,
+            'claveEmpresa' => (int)$folio->clave_empresa,
+            'NombreEmpresa' => (string)$folio->nombre_empresa,
+            'facturacionTerceros' => (string)$folio->facturacion_terceros,
+            'traficoVoz' => (string)$folio->trafico_voz,
+            'traficoVozEntrante' => (string)$folio->voz_entrante,
+            'traficoVozSaliente' => (string)$folio->voz_saliente,
+            'fechaTraficoVoz' => (string)$folio->fecha_trafico_voz,
+            'traficoDatos' => (string)$folio->trafico_datos,
+            'fechaTraficoDatos' => (string)$folio->fecha_trafico_datos,
+            'fechaFacturacion' => (string)$folio->fecha_facturacion,
+            'descripcionAdeudo' => (string)$folio->descripcion_adeudo,
+            'correo' => (string)$folio->correo,
+            'fechaNacimiento' => (string)$folio->fecha_nacimiento,
+            'IDAux' => (string)$folio->id_aux,
+            'terminal' => (string)$folio->terminal,
+            'distrito' => (string)$folio->distrito,
+            'telefonoCelular' => (string)$folio->celular,
+            'entregoExpediente' => (bool)$folio->entrego_expediente,
+            'tipoExpediente' => (string)$folio->tipo_expediente,
+            'fechaExpediente' => (string)$folio->fecha_expediente,
+            'estrategia' => (string)$folio->estrategia,
+            'observaciones' => (string)$folio->observaciones,
+            'respuestaTelmex' => (string)$folio->respuesta_telmex,
+            'motivoRechazo' => (string)$folio->motivo_rechazo,
+            'estaValidado' => (bool)$folio->validado,
+            'empleado' => is_null($folio->empleado) ? null : [ 
+                'clave' => (int)$folio->id_empleado,
+                'nombre' => (string)$folio->empleado->nombre,
+                'RFC' => (string)$folio->empleado->rfc,
+                'estatus' => (string)$folio->empleado->estatus,                      
+            ],
+            'area' => is_null($folio->id_area) ? null : [ 
+                'clave' => (int)$folio->id_area,
+                'nombre' => (string)$folio->area->nombre
+            ],
+            'estatusSIAC' => is_null($folio->id_estatus_siac) ? null : [ 
+                'clave' => (int)$folio->id_estatus_siac,
+                'nombre' => (string)$folio->estatus_siac->nombre
+            ],
+            'linea' => is_null($folio->id_linea) ? null : [ 
+                'clave' => (int)$folio->id_linea,
+                'nombre' => (string)$folio->linea->nombre
+            ],
+            'lineaContratada' => is_null($folio->id_linea_contratada) ? null : [ 
+                'clave' => (int)$folio->id_linea_contratada,
+                'nombre' => (string)$folio->linea_contratada->nombre
+            ],
+            'division' => is_null($folio->id_division) ? null : [ 
+                'clave' => (int)$folio->id_division,
+                'nombre' => (string)$folio->division->nombre
+            ],
+            'tienda' => is_null($folio->id_tienda) ? null : [ 
+                'clave' => (int)$folio->id_tienda,
+                'nombre' => (string)$folio->tienda->nombre
+            ],
+            'paquete' => is_null($folio->id_paquete) ? null : [ 
+                'clave' => (int)$folio->id_paquete,
+                'nombre' => (string)$folio->paquete->nombre
+            ],
+            'servicio' => is_null($folio->id_servicio) ? null : [ 
+                'clave' => (int)$folio->id_servicio,
+                'nombre' => (string)$folio->servicio->nombre
+            ],
+            'campana' => is_null($folio->id_campana) ? null : [ 
+                'clave' => (int)$folio->id_campana,
+                'nombre' => (string)$folio->campana->nombre
+            ],
+            'fechaCreacion' => (string)$folio->fecha_creacion,
+            'fechaActualizacion' => (string)$folio->fecha_modificacion,
+            'fechaEliminacion' => isset($folio->fecha_eliminacion) ? (string)$folio->fecha_eliminacion : null
+        ];
+    }
+}

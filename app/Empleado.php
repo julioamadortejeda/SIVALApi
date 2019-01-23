@@ -8,6 +8,7 @@ use App\Scopes\EmpleadoScope;
 use App\ProcesarExcel\DocEmpleados;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
+use App\Transformers\EmpleadoTransformer;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
@@ -35,6 +36,7 @@ class Empleado extends Model implements ToArray, WithMultipleSheets
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
     protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = EmpleadoTransformer::class;
 
     /**
      * The primary key for the model.

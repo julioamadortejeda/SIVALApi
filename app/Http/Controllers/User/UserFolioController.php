@@ -20,7 +20,7 @@ class UserFolioController extends ApiController
         if ($user->esAdministrador()) {
             $folios = Folio::take(500)->get();
         }
-        elseif (!is_null($user->empleado)) {
+        elseif (!$user->esValidacion()) {
             $folios = Folio::whereIn('id_empleado',[$user->id_empleado, $user->empleado->id_gerente])->get();
         }
         else{
@@ -71,7 +71,12 @@ class UserFolioController extends ApiController
 
         $this->validate($request, $reglas);
 
-        if (!$request->has('validado')) {
+        if ($folio->validado != $request->validado) {
+            if ($folio->estaValidado() && $request->validado == false && !$user->esAdministrador()) {
+                return $this->errorResponse('No se tienen permisos para quitar la validacion al folio.', 422);
+            }
+        }
+        else{
             return $this->errorResponse('Se debe especificar un valor diferente para actualizar.', 422);
         }
 

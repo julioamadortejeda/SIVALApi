@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use fractal;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Database\Eloquent\Collection;
@@ -20,11 +21,25 @@ trait ApiResponser
 
 	protected function showAll(Collection $collection, $code = 200)
 	{
+		// if ($collection->isEmpty()) {
+		// 	return $this->successResponse(['data' => $collection], $code);
+		// }
+
+		// $transformer = $collection->first()->transformer;
+		// $collection = $this->transformData($collection, $transformer);
+
 		return $this->successResponse(['data' => $collection], $code);
 	}
 
 	protected function showOne(Model $model, $code = 200)
 	{
 		return $this->successResponse(['data' => $model], $code);
+	}
+
+	protected function transformData($data, $transformer)
+	{
+		$tranformation = fractal($data, new $transformer);
+
+		return $tranformation->toArray();
 	}
 }

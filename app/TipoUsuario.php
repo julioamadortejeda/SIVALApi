@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Transformers\TipoUsuarioTransformer;
 
 /**
  * @property int $id_tipo_usuario
@@ -23,6 +24,7 @@ class TipoUsuario extends Model
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
     protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = TipoUsuarioTransformer::class;
     /**
      * The primary key for the model.
      * 

@@ -39,18 +39,51 @@ class UserController extends ApiController
 
         $this->validate($request, $reglas);
 
-        if ($request->has('id_empleado') && !is_null(Empleado::find($request->id_empleado)))
-            $datos['id_empleado'] = $request->id_empleado;
-        elseif (!$request->has('id_empleado')) 
-            $datos['id_empleado'] = null;
-        else
-            return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
+        // if ($request->has('id_empleado') && !is_null(Empleado::find($request->id_empleado)))
+        //     $datos['id_empleado'] = $request->id_empleado;
+        // elseif (!$request->has('id_empleado')) 
+        //     $datos['id_empleado'] = null;
+        // else
+        //     return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
 
-        if ($request->has('id_tipo_usuario') && !is_null(TipoUsuario::find($request->id_tipo_usuario)))
+        $empleado  = null;
+        if ($request->has('id_empleado'))
+            $empleado = Empleado::find($request->id_empleado);
+
+        $tipoUsuario = TipoUsuario::find($request->id_tipo_usuario);
+
+        // if (!is_null($tipoUsuario)) {
+        //     if($tipoUsuario->nombre == User::USER_ADMINISTRADOR || $tipoUsuario->nombre == User::USER_VALIDACION)
+        //         $datos['id_empleado'] = null;
+        //     elseif ($datos['id_empleado'] == null) {
+        //         return $this->errorResponse('El tipo de usuario (%s) requiere una clave de empleado valida.', 409);
+        //     }
+
+        //     $datos['id_tipo_usuario'] = $request->id_tipo_usuario;
+        // }
+        // else
+        //     return $this->errorResponse('El tipo de usuario no existe.', 409);
+
+        if (!is_null($tipoUsuario)) {
+            if($tipoUsuario->nombre == User::USER_ADMINISTRADOR || $tipoUsuario->nombre == User::USER_VALIDACION) {
+                if(!is_null($empleado)){
+                    return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $tipoUsuario->nombre), 409);
+                }
+                
+                $datos['id_empleado'] = null;
+            }
+            else {
+                if (is_null($empleado))
+                    return $this->errorResponse(sprintf('El tipo de usuario (%s) requiere una clave de empleado valida.', $tipoUsuario->nombre), 409);
+                else
+                $datos['id_empleado'] = $empleado->id_empleado;
+            }
+
             $datos['id_tipo_usuario'] = $request->id_tipo_usuario;
+        }
         else
             return $this->errorResponse('El tipo de usuario no existe.', 409);
-
+            
         $datos['password'] = bcrypt($request->password);
 
         $usuario = User::create($datos);
