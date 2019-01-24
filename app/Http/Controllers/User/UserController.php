@@ -32,54 +32,40 @@ class UserController extends ApiController
     {
         $datos = $request->all();
         $reglas = [
-            'nombre' => 'required|unique:users,nombre',
+            'nombre' => 'required|unique:users,nombre|min:6',
             'password' => 'required|min:6|confirmed',
-            'id_tipo_usuario' => 'required'
+            'id_tipo_usuario' => 'required',
+            'id_empleado' => 'integer|min:1'
         ];
 
         $this->validate($request, $reglas);
 
-        // if ($request->has('id_empleado') && !is_null(Empleado::find($request->id_empleado)))
-        //     $datos['id_empleado'] = $request->id_empleado;
-        // elseif (!$request->has('id_empleado')) 
-        //     $datos['id_empleado'] = null;
-        // else
-        //     return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
-
         $empleado  = null;
         if ($request->has('id_empleado'))
             $empleado = Empleado::find($request->id_empleado);
-
+        
         $tipoUsuario = TipoUsuario::find($request->id_tipo_usuario);
-
-        // if (!is_null($tipoUsuario)) {
-        //     if($tipoUsuario->nombre == User::USER_ADMINISTRADOR || $tipoUsuario->nombre == User::USER_VALIDACION)
-        //         $datos['id_empleado'] = null;
-        //     elseif ($datos['id_empleado'] == null) {
-        //         return $this->errorResponse('El tipo de usuario (%s) requiere una clave de empleado valida.', 409);
-        //     }
-
-        //     $datos['id_tipo_usuario'] = $request->id_tipo_usuario;
-        // }
-        // else
-        //     return $this->errorResponse('El tipo de usuario no existe.', 409);
 
         if (!is_null($tipoUsuario)) {
             if($tipoUsuario->nombre == User::USER_ADMINISTRADOR || $tipoUsuario->nombre == User::USER_VALIDACION) {
-                if(!is_null($empleado)){
+                if(!is_null($empleado) || !is_null($request->id_empleado)) {
                     return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $tipoUsuario->nombre), 409);
                 }
                 
                 $datos['id_empleado'] = null;
             }
             else {
-                if (is_null($empleado))
-                    return $this->errorResponse(sprintf('El tipo de usuario (%s) requiere una clave de empleado valida.', $tipoUsuario->nombre), 409);
+                if (is_null($empleado)) {
+                    if (is_null($request->id_empleado)) {
+                        return $this->errorResponse(sprintf('Se requiere un Empleado para el tipo de usuario (%s)', $tipoUsuario->nombre), 409);
+                    }
+                    return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
+                }
                 else
-                $datos['id_empleado'] = $empleado->id_empleado;
+                    $datos['id_empleado'] = $empleado->id_empleado;
             }
 
-            $datos['id_tipo_usuario'] = $request->id_tipo_usuario;
+            $datos['id_tipo_usuario'] = $tipoUsuario->id_tipo_usuario;
         }
         else
             return $this->errorResponse('El tipo de usuario no existe.', 409);
@@ -115,33 +101,41 @@ class UserController extends ApiController
     {
         $reglas = [
             'nombre' => 'unique:users,nombre,' . $user->id_usuario . ',id_usuario',
-            'password' => 'min:6|confirmed'
+            'password' => 'min:6|confirmed',
+            'id_empleado' => 'integer|min:1',
         ];
 
         $this->validate($request, $reglas);
+        $empleado = null;
 
         if ($request->has('id_empleado')) {
-            if (is_null($request->id_empleado)) {
-                   $user->id_empleado = null;
+            $empleado = Empleado::find($request->id_empleado);
+
+            if($user->esAdministrador() || $user->esValidacion()) {
+                if(!is_null($empleado) || !is_null($request->id_empleado))
+                    return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $user->tipo_usuario->nombre), 409);
             }
             else {
-                if (!is_null(Empleado::find($request->id_empleado)) ) {
-                        $user->id_empleado = $request->id_empleado;
-                }
-                else
+                if (is_null($empleado))
                     return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
+                else
+                    $user->id_empleado  = $empleado->id_empleado;
             }
         }
             
-        if ($request->has('id_tipo_usuario')){
-            if (!is_null(TipoUsuario::find($request->id_tipo_usuario))) {
-                //if ($user->id_tipo_usuario != $request->id_tipo_usuario) {
-                    $user->id_tipo_usuario = $request->id_tipo_usuario;
-                //}
-            }
-            else
-                return $this->errorResponse('El tipo de usuario no existe.', 409);
-        }
+        //*/********************************************************************* */
+        // POR EL MOMENTO NO SE PUEDE EDITAR EL TIPO DE USUARIO
+        //*********************************************************************** */
+
+        // if ($request->has('id_tipo_usuario')){
+        //     if (!is_null(TipoUsuario::find($request->id_tipo_usuario))) {
+        //         //if ($user->id_tipo_usuario != $request->id_tipo_usuario) {
+        //             $user->id_tipo_usuario = $request->id_tipo_usuario;
+        //         //}
+        //     }
+        //     else
+        //         return $this->errorResponse('El tipo de usuario no existe.', 409);
+        // }
             
         if ($request->has('nombre') && $request->nombre != $user->nombre)
             $user->nombre = $request->nombre;

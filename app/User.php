@@ -25,8 +25,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    private const USER_ADMINISTRADOR = 'administrador';
-    private const USER_VALIDACION = 'validacion';
+    public const USER_ADMINISTRADOR = 'administrador';
+    public const USER_VALIDACION = 'validacion';
     use Notifiable, SoftDeletes;
     
     const CREATED_AT = 'fecha_creacion';
