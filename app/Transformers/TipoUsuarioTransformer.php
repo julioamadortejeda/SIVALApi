@@ -22,4 +22,17 @@ class TipoUsuarioTransformer extends TransformerAbstract
             'fechaEliminacion' => isset($tipoUsuario->fecha_eliminacion) ? (string)$tipoUsuario->fecha_eliminacion : null
         ];
     }
+
+    public static function originalAttribute($index)
+    {
+        $attribute = [
+            'clave' => 'id_tipo_usuario',
+            'nombre' => 'nombre',
+            'fechaCreacion' => 'fecha_creacion',
+            'fechaActualizacion' => 'fecha_modificacion',
+            'fechaEliminacion' => 'fecha_eliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
 }

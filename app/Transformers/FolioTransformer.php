@@ -92,4 +92,56 @@ class FolioTransformer extends TransformerAbstract
             'fechaEliminacion' => isset($folio->fecha_eliminacion) ? (string)$folio->fecha_eliminacion : null
         ];
     }
+
+    public static function originalAttribute($index)
+    {
+        $attribute = [
+            'folio' => 'id_folio',
+            'fechaCaptura' => 'fecha_captura',
+            'telefonoAsignado' => 'telefono_asignado',
+            'telefonoPortado' => 'telefono_portado',
+            'fechaCambioEstatus' => 'fecha_cambio',
+            'claveEmpresa' => 'clave_empresa',
+            'NombreEmpresa' => 'nombre_empresa',
+            'facturacionTerceros' => 'facturacion_terceros',
+            'traficoVoz' => 'trafico_voz',
+            'traficoVozEntrante' => 'voz_entrante',
+            'traficoVozSaliente' => 'voz_saliente',
+            'fechaTraficoVoz' => 'fecha_trafico_voz',
+            'traficoDatos' => 'trafico_datos',
+            'fechaTraficoDatos' => 'fecha_trafico_datos',
+            'fechaFacturacion' => 'fecha_facturacion',
+            'descripcionAdeudo' => 'descripcion_adeudo',
+            'correo' => 'correo',
+            'fechaNacimiento' => 'fecha_nacimiento',
+            'IDAux' => 'id_aux',
+            'terminal' => 'terminal',
+            'distrito' => 'distrito',
+            'telefonoCelular' => 'celular',
+            'entregoExpediente' => 'entrego_expediente',
+            'tipoExpediente' => 'tipo_expediente',
+            'fechaExpediente' => 'fecha_expediente',
+            'estrategia' => 'estrategia',
+            'observaciones' => 'observaciones',
+            'respuestaTelmex' => 'respuesta_telmex',
+            'motivoRechazo' => 'motivo_rechazo',
+            'estaValidado' => 'validado',
+            'empleado' => 'id_empleado',
+            'area' => 'id_area',
+            'estatusSIAC' => 'id_estatus_siac',
+            'linea' => 'id_linea',
+            'lineaContratada' => 'id_linea_contratada',
+            'division' => 'id_division',
+            'tienda' => 'id_tienda',
+            'paquete' => 'id_paquete',
+            'servicio' => 'id_servicio',
+            'campana' => 'id_campana',
+            'fechaCreacion' => 'fecha_creacion',
+            'fechaActualizacion' => 'fecha_modificacion',
+            'fechaEliminacion' => 'fecha_eliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
+    
 }

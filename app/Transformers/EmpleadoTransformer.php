@@ -19,7 +19,7 @@ class EmpleadoTransformer extends TransformerAbstract
             'nombre' => (string)$empleado->nombre,
             'RFC' => (string)$empleado->rfc,
             'estatus' => (string)$empleado->estatus,
-            'gernete' => is_null($empleado->gerente) ? null : [ 
+            'gerente' => is_null($empleado->gerente) ? null : [ 
                 'clave' => (int)$empleado->gerente->id_empleado,
                 'nombre' => (string)$empleado->gerente->nombre,
                 'RFC' => (string)$empleado->gerente->rfc,
@@ -29,5 +29,20 @@ class EmpleadoTransformer extends TransformerAbstract
             'fechaActualizacion' => (string)$empleado->fecha_modificacion,
             'fechaEliminacion' => isset($empleado->fecha_eliminacion) ? (string)$empleado->fecha_eliminacion : null
         ];
+    }
+
+    public static function originalAttribute($index)
+    {
+        $attribute = [
+            'clave' => 'id_empleado',
+            'nombre' => 'nombre',
+            'RFC' => 'rfc',
+            'estatus' => 'estatus',
+            'fechaCreacion' => 'fecha_creacion',
+            'fechaActualizacion' => 'fecha_modificacion',
+            'fechaEliminacion' => 'fecha_eliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
     }
 }
