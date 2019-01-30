@@ -4,6 +4,7 @@ namespace App;
 
 use App\Folio;
 use App\Orden;
+use App\Scopes\FolioOrdenScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -39,6 +40,12 @@ class FolioOrden extends Model
      * @var array
      */
     protected $fillable = ['id_folio', 'id_orden'];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new FolioOrdenScope);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -138,7 +138,7 @@ class PIPES
 			$orden->etapa_orden_tv = $row[31];
 
 			//Solo si el estatussiac no es de duplicado o si la orden es nueva, entonces se guardan los cambios de la orden
-			if ($folio->estatussiac->nombre != trans('mensajes.solicitudDuplicada') || !$orden->exists) {
+			if ($folio->estatus_siac->nombre != trans('mensajes.solicitudDuplicada') || !$orden->exists) {
 				$orden->save();
 			}
 			

@@ -191,7 +191,7 @@ class Folio extends Model implements ToArray, WithMultipleSheets
         return $this->belongsTo(Tienda::class, 'id_tienda', 'id_tienda');
     }
 
-    public function folioOrden()
+    public function folio_orden()
     {
         return $this->hasMany(FolioOrden::class, 'id_folio', 'id_folio');
     }

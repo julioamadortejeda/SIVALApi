@@ -45,6 +45,11 @@ class FolioTransformer extends TransformerAbstract
             'respuestaTelmex' => (string)$folio->respuesta_telmex,
             'motivoRechazo' => (string)$folio->motivo_rechazo,
             'estaValidado' => (bool)$folio->validado,
+            'folio_orden' => is_null($folio->folio_orden) ? null : [
+                'clave' => (int) $folio->folio_orden->id_folio_orden,
+                'ordenServicio' => (double) $folio->folio_orden->numero_orden,
+                //'fecha_orden' => isset($folio->folio_orden->fecha_orden) ? 
+            ],
             'empleado' => is_null($folio->empleado) ? null : [ 
                 'clave' => (int)$folio->id_empleado,
                 'nombre' => (string)$folio->empleado->nombre,
