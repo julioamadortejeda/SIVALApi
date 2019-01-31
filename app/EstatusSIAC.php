@@ -24,6 +24,7 @@ class EstatusSIAC extends Model
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
     protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $llave = 'id_estatus_siac';
 
     /**
      * The primary key for the model.

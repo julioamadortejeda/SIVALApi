@@ -19,6 +19,7 @@ use App\FolioTelefono;
 use App\LineaContratada;
 use App\Scopes\FolioScope;
 use App\ProcesarExcel\PIPES;
+use App\ProcesarExcel\PIPES1;
 use App\Transformers\FolioTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -103,7 +104,8 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     /**
      * @var array
      */
-    protected $fillable = ['fecha_captura', 'id_empleado', 'id_estatus_siac', 'id_linea', 'id_linea_contratada', 'id_area', 'id_division', 'IdTienda', 'IdPaquete', 'id_campana', 'IdServicio', 'telefono_asignado', 'telefono_portado', 'fecha_cambio', 'clave_empresa', 'nombre_empresa', 'facturacion_terceros', 'trafico_voz', 'voz_entrante', 'voz_saliente', 'fecha_trafico_voz', 'trafico_datos', 'fecha_trafico_datos', 'fecha_facturacion', 'descripcion_adeudo', 'correo', 'fecha_nacimiento', 'id_aux', 'terminal', 'distrito', 'celular', 'entrego_expediente', 'tipo_expediente', 'fecha_expediente', 'estrategia', 'observaciones', 'respuesta_telmex', 'motivo_rechazo'];
+    protected $fillable = ['fecha_captura', 'id_empleado', 'id_estatus_siac', 'id_linea', 'id_linea_contratada', 'id_area', 'id_division', 'IdTienda', 'IdPaquete', 'id_campana', 'IdServicio',
+    'id_adeudo', 'id_cliente', 'id_entretenimiento', 'id_estrategia', 'id_gasto', 'id_giro', 'id_rechazo', 'id_trafico_voz', 'id_validacion', 'telefono_asignado', 'telefono_portado', 'fecha_cambio', 'clave_empresa', 'nombre_empresa', 'facturacion_terceros', 'trafico_voz', 'voz_entrante', 'voz_saliente', 'fecha_trafico_voz', 'trafico_datos', 'fecha_trafico_datos', 'fecha_facturacion', 'descripcion_adeudo', 'correo', 'fecha_nacimiento', 'id_aux', 'terminal', 'distrito', 'celular', 'entrego_expediente', 'tipo_expediente', 'fecha_expediente', 'estrategia', 'observaciones', 'respuesta_telmex', 'motivo_rechazo'];
 
     protected static function boot()
     {
@@ -224,23 +226,28 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     /*FUNCIONES PARA PROCESAR EL ARCHIVO DE CARGA DE EMPLEADOS **********/
     public function array(Array $rows)
     {
-        $errores = collect([]);
-        $linea = 1;
-        foreach (array_slice($rows, 1) as $row) 
-        {         
-            list($correcto, $mensaje) = PIPES::procesarPIPES($row);
+        // $errores = collect([]);
+        // $linea = 1;
+        // foreach (array_slice($rows, 1) as $row) 
+        // {         
+        //     list($correcto, $mensaje) = PIPES::procesarPIPES($row);
 
-            if (!$correcto) {
-                $errores->put($linea, $mensaje);
-            }
+        //     if (!$correcto) {
+        //         $errores->put($linea, $mensaje);
+        //     }
 
-            $linea++;
-        }
+        //     $linea++;
+        // }
 
         // if(!$errores->isEmpty())
         //     dd($errores);
 
-        return $errores;
+        // return $errores;
+
+        $errores = PIPES1::procesarPIPES($rows);
+
+        if(!$errores->isEmpty())
+             dd($errores);
     }
 
     //Metodo para indicar, en caso de que el excel tenga multiples hojas, 
