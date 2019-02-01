@@ -11,7 +11,8 @@ class FolioScope implements Scope
 	public function apply(Builder $builder, Model $model)
 	{
 		$builder->with(['folio_orden', 'empleado', 'area', 'estatus_siac', 'linea',
-					'linea_contratada', 'division', 'tienda', 'paquete', 'servicio', 'campana'])
+					'linea_contratada', 'division', 'tienda', 'paquete', 'servicio', 'campana', 'adeudo', 'cliente', 'entretenimiento', 
+					'estrategia', 'gasto', 'giro', 'rechazo', 'trafico_voz', 'validacion'])
 				->orderBy('fecha_captura', 'desc')
                 ->orderBy('id_folio','desc');
 	}

@@ -6,6 +6,7 @@ return [
 
 	/*Textos default BD*/
 	'paqueteNoValido' => 'Paquete no valido',
+	'servicioNoValido' => 'El servicio no es valido.',
 	'paqueteDPDefault' => 'I- 2PLAY',
 	'solicitudDuplicada' => 'SOLICITUD DUPLICADA',
 

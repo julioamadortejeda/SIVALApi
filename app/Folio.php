@@ -3,23 +3,33 @@
 namespace App;
 
 use App\Area;
+use App\Giro;
 use App\Audio;
+use App\Gasto;
 use App\Linea;
 use App\Orden;
+use App\Adeudo;
 use App\Tienda;
 use App\Campana;
+use App\Cliente;
 use App\Paquete;
+use App\Rechazo;
 use App\Division;
 use App\Empleado;
 use App\Servicio;
 use App\Documento;
+use App\Estrategia;
 use App\FolioOrden;
+use App\TraficoVoz;
+use App\Validacion;
 use App\EstatusSIAC;
 use App\FolioTelefono;
+use App\Entretenimiento;
 use App\LineaContratada;
 use App\Scopes\FolioScope;
 use App\ProcesarExcel\PIPES;
 use App\ProcesarExcel\PIPES1;
+use App\ProcesarExcel\PIPES2;
 use App\Transformers\FolioTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -195,12 +205,12 @@ class Folio extends Model implements ToArray, WithMultipleSheets
 
     public function folio_orden()
     {
-        return $this->hasMany(FolioOrden::class, 'id_folio', 'id_folio');
+        return $this->belongsTo(FolioOrden::class, 'id_folio', 'id_folio');
     }
 
     public function telefonos()
     {
-        return $this->hasMany(FolioTelefono::class, 'id_folio', 'id_folio');
+        return $this->belongsTo(FolioTelefono::class, 'id_folio', 'id_folio');
     }
 
     public function audios()
@@ -211,6 +221,51 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     public function documentos()
     {
         return $this->hasMany(Documento::class, 'id_folio', 'id_folio');
+    }
+
+    public function adeudo()
+    {
+        return $this->belongsTo(Adeudo::class, 'id_adeudo', 'id_adeudo');
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'id_cliente', 'id_cliente');
+    }
+
+    public function entretenimiento()
+    {
+        return $this->belongsTo(Entretenimiento::class, 'id_entretenimiento', 'id_entretenimiento');
+    }
+
+    public function estrategia()
+    {
+        return $this->belongsTo(Estrategia::class, 'id_estrategia', 'id_estrategia');
+    }
+
+    public function gasto()
+    {
+        return $this->belongsTo(Gasto::class, 'id_gasto', 'id_gasto');
+    }
+
+    public function giro()
+    {
+        return $this->belongsTo(Giro::class, 'id_giro', 'id_giro');
+    }
+
+    public function rechazo()
+    {
+        return $this->belongsTo(Rechazo::class, 'id_rechazo', 'id_rechazo');
+    }
+
+    public function trafico_voz()
+    {
+        return $this->belongsTo(TraficoVoz::class, 'id_trafico_voz', 'id_trafico_voz');
+    }
+
+    public function validacion()
+    {
+        return $this->belongsTo(Validacion::class, 'id_validacion', 'id_validacion');
     }
 
     /**
@@ -244,10 +299,11 @@ class Folio extends Model implements ToArray, WithMultipleSheets
 
         // return $errores;
 
-        $errores = PIPES1::procesarPIPES($rows);
+        $errores = PIPES2::procesarPIPES($rows);
 
         if(!$errores->isEmpty())
-             dd($errores);
+           dump($errores);     
+        //dd($errores);
     }
 
     //Metodo para indicar, en caso de que el excel tenga multiples hojas, 

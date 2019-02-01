@@ -23,14 +23,14 @@ class FolioTransformer extends TransformerAbstract
             'claveEmpresa' => (int)$folio->clave_empresa,
             'NombreEmpresa' => (string)$folio->nombre_empresa,
             'facturacionTerceros' => (string)$folio->facturacion_terceros,
-            'traficoVoz' => (string)$folio->trafico_voz,
+            //'traficoVoz' => (string)$folio->trafico_voz,
             'traficoVozEntrante' => (string)$folio->voz_entrante,
             'traficoVozSaliente' => (string)$folio->voz_saliente,
             'fechaTraficoVoz' => (string)$folio->fecha_trafico_voz,
             'traficoDatos' => (string)$folio->trafico_datos,
             'fechaTraficoDatos' => (string)$folio->fecha_trafico_datos,
             'fechaFacturacion' => (string)$folio->fecha_facturacion,
-            'descripcionAdeudo' => (string)$folio->descripcion_adeudo,
+            //'descripcionAdeudo' => (string)$folio->descripcion_adeudo,
             'correo' => (string)$folio->correo,
             'fechaNacimiento' => (string)$folio->fecha_nacimiento,
             'IDAux' => (string)$folio->id_aux,
@@ -40,12 +40,12 @@ class FolioTransformer extends TransformerAbstract
             'entregoExpediente' => (bool)$folio->entrego_expediente,
             'tipoExpediente' => (string)$folio->tipo_expediente,
             'fechaExpediente' => (string)$folio->fecha_expediente,
-            'estrategia' => (string)$folio->estrategia,
+            //'estrategia' => (string)$folio->estrategia,
             'observaciones' => (string)$folio->observaciones,
             'respuestaTelmex' => (string)$folio->respuesta_telmex,
-            'motivoRechazo' => (string)$folio->motivo_rechazo,
+            //'motivoRechazo' => (string)$folio->motivo_rechazo,
             'estaValidado' => (bool)$folio->validado,
-            'folio_orden' => is_null($folio->folio_orden) ? null : [
+            'folio_orden' => empty($folio->folio_orden) ? null : [
                 'clave' => (int) $folio->folio_orden->id_folio_orden,
                 'ordenServicio' => (double) $folio->folio_orden->numero_orden,
                 //'fecha_orden' => isset($folio->folio_orden->fecha_orden) ? 
@@ -91,6 +91,42 @@ class FolioTransformer extends TransformerAbstract
             'campana' => is_null($folio->id_campana) ? null : [ 
                 'clave' => (int)$folio->id_campana,
                 'nombre' => (string)$folio->campana->nombre
+            ],
+            'adeudo' => is_null($folio->id_adeudo) ? null : [ 
+                'clave' => (int)$folio->id_adeudo,
+                'nombre' => (string)$folio->adeudo->nombre
+            ],
+            'cliente' => is_null($folio->id_cliente) ? null : [ 
+                'clave' => (int)$folio->id_cliente,
+                'nombre' => (string)$folio->cliente->nombre
+            ],
+            'entretenimiento' => is_null($folio->id_entretenimiento) ? null : [ 
+                'clave' => (int)$folio->id_entretenimiento,
+                'nombre' => (string)$folio->entretenimiento->nombre
+            ],
+            'estrategia' => is_null($folio->id_estrategia) ? null : [ 
+                'clave' => (int)$folio->id_estrategia,
+                'nombre' => (string)$folio->estrategia->nombre
+            ], 
+            'gasto' => is_null($folio->id_gasto) ? null : [ 
+                'clave' => (int)$folio->id_gasto,
+                'nombre' => (string)$folio->gasto->nombre
+            ],
+            'giro' => is_null($folio->id_giro) ? null : [ 
+                'clave' => (int)$folio->id_giro,
+                'nombre' => (string)$folio->giro->nombre
+            ],
+            'rechazo' => is_null($folio->id_rechazo) ? null : [ 
+                'clave' => (int)$folio->id_rechazo,
+                'nombre' => (string)$folio->rechazo->nombre
+            ],
+            'traficoVoz' => is_null($folio->id_trafico_voz) ? null : [ 
+                'clave' => (int)$folio->id_trafico_voz,
+                'nombre' => (string)$folio->trafico_voz->nombre
+            ],
+            'validacion' => is_null($folio->id_validacion) ? null : [ 
+                'clave' => (int)$folio->id_validacion,
+                'nombre' => (string)$folio->validacion->nombre
             ],
             'fechaCreacion' => (string)$folio->fecha_creacion,
             'fechaActualizacion' => (string)$folio->fecha_modificacion,
