@@ -32,29 +32,30 @@ class PIPES1
 	{
 		// $listaEstatusSIAC = Empleado::take(10)->select('id_empleado', 'nombre')->get()->toArray();
 		// dd($listaEstatusSIAC);
-		$listaEstatusSIAC = EstatusSIAC::take(10)->select('id_estatus_siac', 'nombre')->get();
-		$listaLineas = Linea::take(10)->select('id_linea', 'nombre')->get();
-		$listaLineasContratadas = LineaContratada::take(10)->select('id_linea_contratada', 'nombre')->get();
-		$listaAreas = Area::take(10)->select('id_area', 'nombre')->get();
-		$listaDivisiones = Division::take(10)->select('id_division', 'nombre')->get();
-		$listaCampanas = Campana::take(10)->select('id_campana', 'nombre')->get();
-		$listaServicios = Servicio::take(10)->select('id_servicio', 'nombre')->get();
-		$listaPaquetes = Paquete::take(10)->select('id_paquete', 'nombre')->get();
-		$listaTiendas = Tienda::take(10)->select('id_tienda', 'nombre')->get();
-		$listaClientes = Cliente::take(10)->select('id_cliente', 'nombre')->get();
-		$listaEntretenimientos = Entretenimiento::take(10)->select('id_entretenimiento', 'nombre')->get();
-		$listaGastos = Gasto::take(10)->select('id_gasto', 'nombre')->get();
-		$listaGiros = Giro::take(10)->select('id_giro', 'nombre')->get();
-		$listaAdeudos = Adeudo::take(10)->select('id_adeudo', 'nombre')->get();
-		$listaValidaciones = Validacion::take(10)->select('id_validacion', 'nombre')->get();
-		$listaEstrategias = Estrategia::take(10)->select('id_estrategia', 'nombre')->get();
-		$listaRechazos = Rechazo::take(10)->select('id_rechazo', 'nombre')->get();
-		$listatraficos = TraficoVoz::take(10)->select('id_trafico_voz', 'nombre')->get();
+		$listaEstatusSIAC = EstatusSIAC::select('id_estatus_siac', 'nombre')->get();
+		$listaLineas = Linea::select('id_linea', 'nombre')->get();
+		$listaLineasContratadas = LineaContratada::select('id_linea_contratada', 'nombre')->get();
+		$listaAreas = Area::select('id_area', 'nombre')->get();
+		$listaDivisiones = Division::select('id_division', 'nombre')->get();
+		$listaCampanas = Campana::select('id_campana', 'nombre')->get();
+		$listaServicios = Servicio::select('id_servicio', 'nombre')->get();
+		$listaPaquetes = Paquete::select('id_paquete', 'nombre')->get();
+		$listaTiendas = Tienda::select('id_tienda', 'nombre')->get();
+		$listaClientes = Cliente::select('id_cliente', 'nombre')->get();
+		$listaEntretenimientos = Entretenimiento::select('id_entretenimiento', 'nombre')->get();
+		$listaGastos = Gasto::select('id_gasto', 'nombre')->get();
+		$listaGiros = Giro::select('id_giro', 'nombre')->get();
+		$listaAdeudos = Adeudo::select('id_adeudo', 'nombre')->get();
+		$listaValidaciones = Validacion::select('id_validacion', 'nombre')->get();
+		$listaEstrategias = Estrategia::select('id_estrategia', 'nombre')->get();
+		$listaRechazos = Rechazo::select('id_rechazo', 'nombre')->get();
+		$listatraficos = TraficoVoz::select('id_trafico_voz', 'nombre')->get();
+
+		$errores = collect([]);
 		//dd($listaAdeudos);
 
 		try 
 		{
-			$errores = collect([]);
 			$linea = 0;
 			foreach (array_slice($rows, 1) as $row) 
 			{
@@ -126,24 +127,24 @@ class PIPES1
 					}
 
 					$folio->id_empleado = $empleado->id_empleado;
-					$folio->id_estatus_siac = PIPES1::asignarCatalogo(EstatusSIAC::class, $row[4], $listaEstatusSIAC);
-					$folio->id_linea = PIPES1::asignarCatalogo(Linea::class, $row[5], $listaLineas);
-					$folio->id_linea_contratada = PIPES1::asignarCatalogo(LineaContratada::class, $row[6], $listaLineasContratadas);
-					$folio->id_area = PIPES1::asignarCatalogo(Area::class, $row[7], $listaAreas);
-					$folio->id_division = PIPES1::asignarCatalogo(Division::class, $row[8], $listaDivisiones);
-					$folio->id_tienda = PIPES1::asignarCatalogo(Tienda::class, $row[9], $listaTiendas);
-					$folio->id_paquete = PIPES1::asignarCatalogo(Paquete::class, $row[10], $listaPaquetes);
-					$folio->id_campana = PIPES1::asignarCatalogo(Campana::class, $row[20], $listaCampanas);
+					$folio->id_estatus_siac = PIPES1::asignarCatalogo(EstatusSIAC::class, $row[4], $listaEstatusSIAC)->id_estatus_siac ?? null;
+					$folio->id_linea = PIPES1::asignarCatalogo(Linea::class, $row[5], $listaLineas)->id_linea ?? null;
+					$folio->id_linea_contratada = PIPES1::asignarCatalogo(LineaContratada::class, $row[6], $listaLineasContratadas)->id_linea_contratada ?? null;
+					$folio->id_area = PIPES1::asignarCatalogo(Area::class, $row[7], $listaAreas)->id_area ?? null;
+					$folio->id_division = PIPES1::asignarCatalogo(Division::class, $row[8], $listaDivisiones)->id_division ?? null;
+					$folio->id_tienda = PIPES1::asignarCatalogo(Tienda::class, $row[9], $listaTiendas)->id_tienda ?? null;
+					$folio->id_paquete = PIPES1::asignarCatalogo(Paquete::class, $row[10], $listaPaquetes)->id_paquete ?? null;
+					$folio->id_campana = PIPES1::asignarCatalogo(Campana::class, $row[20], $listaCampanas)->id_campana ?? null;
 
-					$folio->id_adeudo = PIPES1::asignarCatalogo(Adeudo::class, $row[39], $listaAdeudos);
-					$folio->id_cliente = PIPES1::asignarCatalogo(Cliente::class, $row[51], $listaClientes);
-					$folio->id_entretenimiento = PIPES1::asignarCatalogo(Entretenimiento::class, $row[53], $listaEntretenimientos);
-					$folio->id_estrategia = PIPES1::asignarCatalogo(Estrategia::class, $row[1], $listaEstrategias);
-					$folio->id_gasto = PIPES1::asignarCatalogo(Gasto::class, $row[54], $listaGastos);
-					$folio->id_giro = PIPES1::asignarCatalogo(Giro::class, $row[55], $listaGiros);
-					$folio->id_rechazo = PIPES1::asignarCatalogo(Rechazo::class, $row[13], $listaRechazos);
-					$folio->id_trafico_voz = PIPES1::asignarCatalogo(TraficoVoz::class, $row[32], $listatraficos);
-					$folio->id_validacion = PIPES1::asignarCatalogo(Validacion::class, $row[50], $listaValidaciones);
+					$folio->id_adeudo = PIPES1::asignarCatalogo(Adeudo::class, $row[39], $listaAdeudos)->id_adeudo ?? null;
+					$folio->id_cliente = PIPES1::asignarCatalogo(Cliente::class, $row[51], $listaClientes)->id_cliente ?? null;
+					$folio->id_entretenimiento = PIPES1::asignarCatalogo(Entretenimiento::class, $row[53], $listaEntretenimientos)->id_entretenimiento ?? null;
+					$folio->id_estrategia = PIPES1::asignarCatalogo(Estrategia::class, $row[1], $listaEstrategias)->id_estrategia ?? null;
+					$folio->id_gasto = PIPES1::asignarCatalogo(Gasto::class, $row[54], $listaGastos)->id_gasto ?? null;
+					$folio->id_giro = PIPES1::asignarCatalogo(Giro::class, $row[55], $listaGiros)->id_giro ?? null;
+					$folio->id_rechazo = PIPES1::asignarCatalogo(Rechazo::class, $row[13], $listaRechazos)->id_rechazo ?? null;
+					$folio->id_trafico_voz = PIPES1::asignarCatalogo(TraficoVoz::class, $row[32], $listatraficos)->id_trafico_voz ?? null;
+					$folio->id_validacion = PIPES1::asignarCatalogo(Validacion::class, $row[50], $listaValidaciones)->id_validacion ?? null;
 
 					$servicio = $row[52];
 					//si el servicio viene vacio, se pone I- 2PLAY como defalut para indicar que es DP
@@ -151,7 +152,7 @@ class PIPES1
 						$servicio = trans('mensajes.paqueteDPDefault');
 					}
 
-					$folio->id_servicio = PIPES1::asignarCatalogo(Servicio::class, $servicio, $listaServicios);
+					$folio->id_servicio = PIPES1::asignarCatalogo(Servicio::class, $servicio, $listaServicios)->id_servicio;
 					$numero_orden = trim($row[16]);
 					
 					//folio sin orden de servicio
@@ -211,6 +212,7 @@ class PIPES1
 					//return array(true, trans('mensajes.folioGuardado'));
 
 				} catch (\Throwable $th) {
+					//throw $th;
 					$errores->put($linea, $th->getMessage());
 					continue;
 				}
@@ -219,31 +221,39 @@ class PIPES1
 			return $errores;
 		} 
 		catch(\Exception $e) 
-		{		
-			return array(false, $e->getMessage(). ' *Error*');
+		{	
+			//throw $e;
+			$errores->put($linea, $e->getMessage(). ' *Error*');
 		}
+
+		return $errores;
 	}
 
 	/******************************************************************
 	//Asignacion o Creacion de catalogos
 	*******************************************************************/
-	private static function asignarCatalogo($modelo, $nombre = '', Collection $catalogo = null)
+	private static function asignarCatalogo($modelo, $nombre = '', Collection &$catalogo)
 	{
 		try 
 		{
+			//dd($catalogo);
 			if($nombre == '')
 				return null;
-			if (!is_null($catalogo)) {
-				$objetoModelo = $catalogo->where('nombre', $nombre) ?? $modelo::create(['nombre' => $nombre]);
-				dd($objetoModelo->nombre);
-				if(!$objetoModelo->exists)
-					$objetoModelo->save();
+
+			$objetoModelo = $catalogo->where('nombre', $nombre)->first() ?? new $modelo;
+
+			if(!$objetoModelo->exists)
+			{
+				$objetoModelo->nombre = $nombre;
+				$objetoModelo->save();
+				$catalogo->push($objetoModelo);
 			}
 			
 			return $objetoModelo;
 			
 		} catch (\Exception $e) {
-			 throw $e;			
+			 //throw $e;			
+			 return null;
 		}
 	}
 

@@ -3,17 +3,26 @@
 namespace App\ProcesarExcel;
 
 use App\Area;
+use App\Giro;
 use App\Folio;
+use App\Gasto;
 use App\Linea;
 use App\Orden;
+use App\Adeudo;
 use App\Tienda;
 use App\Campana;
+use App\Cliente;
 use App\Paquete;
+use App\Rechazo;
 use App\Division;
-use App\Empleado; 
 use App\Servicio;
+use App\Empleado; 
+use App\Estrategia;
 use App\FolioOrden;
+use App\TraficoVoz;
+use App\Validacion;
 use App\EstatusSIAC;
+use App\Entretenimiento;
 use App\LineaContratada;
 
 class PIPES
@@ -41,14 +50,14 @@ class PIPES
 			$folio->clave_empresa = $row[27];
 			$folio->nombre_empresa = $row[28];
 			$folio->facturacion_terceros = $row[29];
-			$folio->trafico_voz = $row[32];
+			//$folio->trafico_voz = $row[32];
 			$folio->voz_entrante = $row[33];
 			$folio->voz_saliente = $row[34];
 			$folio->fecha_trafico_voz = PIPES::transformDate($row[35]);
 			$folio->trafico_datos = $row[36];
 			$folio->fecha_trafico_datos = PIPES::transformDate($row[37]);
 			$folio->fecha_facturacion = PIPES::transformDate($row[38]);
-			$folio->descripcion_adeudo = $row[39];
+			//$folio->descripcion_adeudo = $row[39];
 			$folio->correo = $row[40];
 			$folio->fecha_nacimiento = PIPES::transformDate($row[41]);
 			$folio->id_aux = $row[42];
@@ -58,10 +67,10 @@ class PIPES
 			$folio->entrego_expediente = is_numeric($row[47]) && $row[47] == 1 ? 1 : 0 ;
 			$folio->tipo_expediente = $row[48];
 			$folio->fecha_expediente = PIPES::transformDate($row[49]);
-			$folio->Estrategia = $row[1];
+			//$folio->Estrategia = $row[1];
 			$folio->Observaciones = str_replace("'", "", $row[11]);
 			$folio->respuesta_telmex = str_replace("'", "", $row[12]);
-			$folio->motivo_rechazo = str_replace("'", "", $row[13]);
+			//$folio->motivo_rechazo = str_replace("'", "", $row[13]);
 
 			$id_empleado = trim($row[2]);
 			if(!is_numeric($id_empleado) && $id_empleado <= 0){
@@ -78,14 +87,24 @@ class PIPES
 			}
 
 			$folio->id_empleado = $empleado->id_empleado;
-			$folio->id_estatus_siac = PIPES::asignarCatalogo(EstatusSIAC::class, $row[4])->id_estatus_siac ?? null;;
-			$folio->id_linea = PIPES::asignarCatalogo(Linea::class, $row[5])->id_linea ?? null;;
-			$folio->id_linea_contratada = PIPES::asignarCatalogo(LineaContratada::class, $row[6])->id_linea_contratada ?? null;;
+			$folio->id_estatus_siac = PIPES::asignarCatalogo(EstatusSIAC::class, $row[4])->id_estatus_siac ?? null;
+			$folio->id_linea = PIPES::asignarCatalogo(Linea::class, $row[5])->id_linea ?? null;
+			$folio->id_linea_contratada = PIPES::asignarCatalogo(LineaContratada::class, $row[6])->id_linea_contratada ?? null;
 			$folio->id_area = PIPES::asignarCatalogo(Area::class, $row[7])->id_area;
-			$folio->id_division = PIPES::asignarCatalogo(Division::class, $row[8])->id_division ?? null;;
-			$folio->id_tienda = PIPES::asignarCatalogo(Tienda::class, $row[9])->id_tienda ?? null;;
+			$folio->id_division = PIPES::asignarCatalogo(Division::class, $row[8])->id_division ?? null;
+			$folio->id_tienda = PIPES::asignarCatalogo(Tienda::class, $row[9])->id_tienda ?? null;
 			$folio->id_paquete = PIPES::asignarCatalogo(Paquete::class, $row[10])->id_paquete ?? null;
 			$folio->id_campana = PIPES::asignarCatalogo(Campana::class, $row[20])->id_campana ?? null;
+
+			$folio->id_adeudo = PIPES::asignarCatalogo(Adeudo::class, $row[39])->id_adeudo ?? null;
+			$folio->id_cliente = PIPES::asignarCatalogo(Cliente::class, $row[51])->id_cliente ?? null;
+			$folio->id_entretenimiento = PIPES::asignarCatalogo(Entretenimiento::class, $row[53])->id_entretenimiento ?? null;
+			$folio->id_estrategia = PIPES::asignarCatalogo(Estrategia::class, $row[1])->id_estrategia ?? null;
+			$folio->id_gasto = PIPES::asignarCatalogo(Gasto::class, $row[54])->id_gasto ?? null;
+			$folio->id_giro = PIPES::asignarCatalogo(Giro::class, $row[55])->id_giro ?? null;
+			$folio->id_rechazo = PIPES::asignarCatalogo(Rechazo::class, $row[13])->id_rechazo ?? null;
+			$folio->id_trafico_voz = PIPES::asignarCatalogo(TraficoVoz::class, $row[32])->id_trafico_voz ?? null;
+			$folio->id_validacion = PIPES::asignarCatalogo(Validacion::class, $row[50])->id_validacion ?? null;
 
 			$servicio = $row[46];
 			//si el servicio viene vacio, se pone I- 2PLAY como defalut para indicar que es DP
