@@ -14,7 +14,7 @@ use App\Campana;
 use App\Cliente;
 use App\Paquete;
 use App\Rechazo;
-use App\Division;
+use App\Division;   
 use App\Empleado;
 use App\Servicio;
 use App\Documento;
@@ -32,8 +32,6 @@ use App\ProcesarExcel\PIPES1;
 use App\ProcesarExcel\PIPES2;
 use App\Transformers\FolioTransformer;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 /**
  * @property int $id_folio
@@ -90,7 +88,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
  * @property Servicio $servicio
  * @property Tienda $tienda
  */
-class Folio extends Model implements ToArray, WithMultipleSheets
+class Folio extends Model
 {
     /**
      * The table associated with the model.
@@ -205,7 +203,7 @@ class Folio extends Model implements ToArray, WithMultipleSheets
 
     public function folio_orden()
     {
-        return $this->belongsTo(FolioOrden::class, 'id_folio', 'id_folio');
+        return $this->hasMany(FolioOrden::class, 'id_folio', 'id_folio');
     }
 
     public function telefonos()
@@ -276,45 +274,4 @@ class Folio extends Model implements ToArray, WithMultipleSheets
     {
         return $this->validado == 1;
     }
-
-    /********************************************************************/
-    /*FUNCIONES PARA PROCESAR EL ARCHIVO DE CARGA DE EMPLEADOS **********/
-    public function array(Array $rows)
-    {
-        // $errores = collect([]);
-        // $linea = 1;
-        // foreach (array_slice($rows, 1) as $row) 
-        // {         
-        //     list($correcto, $mensaje) = PIPES::procesarPIPES($row);
-
-        //     if (!$correcto) {
-        //         $errores->put($linea, $mensaje);
-        //     }
-
-        //     $linea++;
-        // }
-
-        // if(!$errores->isEmpty())
-        //     dd($errores);
-
-        // return $errores;
-
-        $errores = PIPES2::procesarPIPES($rows);
-
-        if(!$errores->isEmpty())
-           dump($errores);     
-        //dd($errores);
-    }
-
-    //Metodo para indicar, en caso de que el excel tenga multiples hojas, 
-    //solo la primera se procesara con el metodo array del modelo Folio
-    public function sheets(): array
-    {
-        return [
-            // Select by sheet index
-            0 => new Folio(),
-        ];
-    }
-
-    /**********FIN FUNCIONES DE CARGA****************************************/
 }

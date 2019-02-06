@@ -240,11 +240,15 @@ class PIPES2
 					if ($folio->estatus_siac->nombre != trans('mensajes.solicitudDuplicada') || !$orden->exists) {
 						$orden->save();
 					}
+
+					dump($folio->folio_orden->count());
 					
 					if (is_null($folioOrden)) {
 						FolioOrden::create(['id_orden' => $orden->id_orden, 'id_folio' => $folio->id_folio]);
 					}
+
 					
+					$folio = null;
 					continue;
 					//return array(true, trans('mensajes.folioGuardado'));
 

@@ -32,7 +32,7 @@ class UserController extends ApiController
     {
         $datos = $request->all();
         $reglas = [
-            'nombre' => 'required|unique:users,nombre|min:6',
+            'nombre' => 'required|unique:users,nombre,NULL,id_user,fecha_eliminacion,NULL|min:6',
             'password' => 'required|min:6|confirmed',
             'id_tipo_usuario' => 'required',
             'id_empleado' => 'integer|min:1'
@@ -47,7 +47,7 @@ class UserController extends ApiController
         $tipoUsuario = TipoUsuario::find($request->id_tipo_usuario);
 
         if (!is_null($tipoUsuario)) {
-            if($tipoUsuario->nombre == User::USER_ADMINISTRADOR || $tipoUsuario->nombre == User::USER_VALIDACION) {
+            if(strtolower($tipoUsuario->nombre) == User::USER_ADMINISTRADOR || strtolower($tipoUsuario->nombre) == User::USER_VALIDACION) {
                 if(!is_null($empleado) || !is_null($request->id_empleado)) {
                     return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $tipoUsuario->nombre), 409);
                 }

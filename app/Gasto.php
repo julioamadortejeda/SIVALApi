@@ -26,7 +26,7 @@ class Gasto extends Model
      * 
      * @var string
      */
-    protected $primaryKey = 'id_gastos';
+    protected $primaryKey = 'id_gasto';
 
     /**
      * @var array
@@ -38,6 +38,6 @@ class Gasto extends Model
      */
     public function folios()
     {
-        return $this->hasMany(Folio::class, 'id_gasto', 'id_gastos');
+        return $this->hasMany(Folio::class, 'id_gasto', 'id_gasto');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Folio;
 
 use App\Folio;
+use App\Imports\FolioImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\ApiController;
@@ -71,6 +72,6 @@ class FolioController extends ApiController
 
     public function importarExcel() 
     {
-        Excel::import(new Folio, request()->file('file'));
+        Excel::import(new FolioImport, request()->file('file'));
     }
 }

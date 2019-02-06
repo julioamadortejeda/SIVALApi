@@ -21,7 +21,10 @@ class UserFolioController extends ApiController
             $folios = Folio::take(500)->get();
         }
         elseif (!$user->esValidacion()) {
-            $folios = Folio::whereIn('id_empleado',[$user->id_empleado, $user->empleado->id_gerente])->get();
+            $folios = Folio::whereHas('empleado', function($query) use($user){
+                $query->where('id_empleado', $user->id_empleado)->orWhere('id_gerente', $user->id_empleado);   
+            })->get();
+            //$folios = Folio::whereIn('id_empleado',[$user->id_empleado, $user->empleado->id_gerente])->get();
         }
         else{
             $folios = Folio::where('validado', false)->take(500)->get();
@@ -40,7 +43,7 @@ class UserFolioController extends ApiController
     {
         if (!$user->esAdministrador()) {
             if (!$user->esValidacion()) {
-                if ($folio->id_empleado != $user->id_empleado && $folio->id_empleado != $user->empleado->id_gerente) {
+                if ($folio->id_empleado != $user->id_empleado && $folio->empleado->id_gerente != $user->id_empleado) {
                     return $this->errorResponse("El folio no pertenece al empleado ($user->id_empleado " 
                                                 . $user->empleado->nombre . ")", 409);
                 }
