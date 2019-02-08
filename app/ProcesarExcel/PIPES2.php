@@ -241,7 +241,7 @@ class PIPES2
 						$orden->save();
 					}
 
-					dump($folio->folio_orden->count());
+					//dump($folio->folio_orden->count());
 					
 					if (is_null($folioOrden)) {
 						FolioOrden::create(['id_orden' => $orden->id_orden, 'id_folio' => $folio->id_folio]);

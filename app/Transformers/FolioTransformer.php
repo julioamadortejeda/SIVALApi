@@ -45,12 +45,7 @@ class FolioTransformer extends TransformerAbstract
             'respuestaTelmex' => (string)$folio->respuesta_telmex,
             //'motivoRechazo' => (string)$folio->motivo_rechazo,
             'estaValidado' => (bool)$folio->validado,
-            // 'folio_orden' => empty($folio->folio_orden) ? null : [
-            //     'clave' => (int) $folio->folio_orden->id_folio_orden,
-            //     'ordenServicio' => (double) $folio->folio_orden->orden->numero_orden,
-            //     //'fecha_orden' => isset($folio->folio_orden->fecha_orden) ? 
-            // ],
-            'folio_orden' => $folio->folio_orden,
+            'ordenes' => $this->agregarOrdenes($folio->folio_orden),
             'empleado' => is_null($folio->empleado) ? null : [ 
                 'clave' => (int)$folio->id_empleado,
                 'nombre' => (string)$folio->empleado->nombre,
@@ -184,6 +179,30 @@ class FolioTransformer extends TransformerAbstract
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
+
+    private function agregarOrdenes($folios_ordenes)
+    {
+        if($folios_ordenes->isEmpty()) 
+            return null;
+
+        $arrayOrdenes = array();
+        foreach ($folios_ordenes as $folio_orden) {
+            $item = [
+                'orden' => $folio_orden->orden->numero_orden,
+                'fechaAlta' => $folio_orden->orden->fecha_orden,
+                'estatus' => $folio_orden->orden->estatus_orden,
+                'fechaPosteo' => $folio_orden->orden->fecha_posteo_orden,
+                'ordenTV' => $folio_orden->orden->orden_tv,
+                'fechaOrdenTV' => $folio_orden->orden->fecha_orden_tv,
+                'estatusTV' => $folio_orden->orden->estatus_orden_tv,
+                'fechaPosteoTV' => $folio_orden->orden->fecha_posteo_orden_tv
+            ];
+
+            array_push($arrayOrdenes,$item);
+        }
+
+        return $arrayOrdenes;        
     }
     
 }

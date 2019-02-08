@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use App\Folio;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,12 +33,12 @@ class FolioTelefono extends Model
      * 
      * @var string
      */
-    protected $primaryKey = 'id_folio_telefono';
+    protected $primaryKey = 'id_telefono';
 
     /**
      * @var array
      */
-    protected $fillable = ['id_folio', 'telefono'];
+    protected $fillable = ['id_folio', 'id_user', 'telefono'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -45,5 +46,13 @@ class FolioTelefono extends Model
     public function folio()
     {
         return $this->belongsTo(Folio::class, 'id_folio', 'id_folio');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 }

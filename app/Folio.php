@@ -208,7 +208,7 @@ class Folio extends Model
 
     public function telefonos()
     {
-        return $this->belongsTo(FolioTelefono::class, 'id_folio', 'id_folio');
+        return $this->hasMany(FolioTelefono::class, 'id_folio', 'id_folio');
     }
 
     public function audios()
