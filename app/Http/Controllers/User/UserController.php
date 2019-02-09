@@ -32,7 +32,7 @@ class UserController extends ApiController
     {
         $datos = $request->all();
         $reglas = [
-            'nombre' => 'required|unique:users,nombre,NULL,id_user,fecha_eliminacion,NULL|min:6',
+            'nombre' => 'required|unique:users,nombre,NULL,id_usuario,fecha_eliminacion,NULL|min:6',
             'password' => 'required|min:6|confirmed',
             'id_tipo_usuario' => 'required',
             'id_empleado' => 'integer|min:1'

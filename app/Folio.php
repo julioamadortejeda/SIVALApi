@@ -14,16 +14,16 @@ use App\Campana;
 use App\Cliente;
 use App\Paquete;
 use App\Rechazo;
-use App\Division;   
 use App\Empleado;
 use App\Servicio;
+use App\Telefono;
 use App\Documento;
 use App\Estrategia;
 use App\FolioOrden;
 use App\TraficoVoz;
 use App\Validacion;
+use App\Division;   
 use App\EstatusSIAC;
-use App\FolioTelefono;
 use App\Entretenimiento;
 use App\LineaContratada;
 use App\Scopes\FolioScope;
@@ -208,7 +208,7 @@ class Folio extends Model
 
     public function telefonos()
     {
-        return $this->hasMany(FolioTelefono::class, 'id_folio', 'id_folio');
+        return $this->hasMany(Telefono::class, 'id_folio', 'id_folio');
     }
 
     public function audios()

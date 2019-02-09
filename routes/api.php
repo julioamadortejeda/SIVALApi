@@ -24,6 +24,8 @@ use Illuminate\Http\Request;
 Route::post('folios', 'Folio\FolioController@importarExcel');
 Route::resource('folios.audios', 'Folio\FolioAudioController', ['only' => ['index', 'store']]);
 Route::resource('folios.documentos', 'Folio\FolioDocumentoController', ['only' => ['index', 'store']]);
+Route::resource('folios.telefonos', 'Folio\FolioTelefonoController', ['only' => ['index', 'store']]);
+Route::resource('folios.telefonos', 'Folio\FolioTelefonoController', ['only' => ['index', 'store']]);
 
 /* 
 	Folios Validacion
