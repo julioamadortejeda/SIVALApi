@@ -45,4 +45,19 @@ class EmpleadoTransformer extends TransformerAbstract
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
     }
+
+    public static function transformedAttribute($index)
+    {
+        $attribute = [
+            'id_empleado' => 'clave',
+            'nombre' => 'nombre',
+            'rfc' => 'RFC',
+            'estatus' => 'estatus',
+            'fecha_creacion' => 'fechaCreacion',
+            'fecha_modificacion' => 'fechaActualizacion',
+            'fecha_eliminacion' => 'fechaEliminacion',
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
 }

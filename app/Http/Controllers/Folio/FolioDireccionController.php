@@ -4,18 +4,18 @@ namespace App\Http\Controllers\Folio;
 
 use App\User;
 use App\Folio;
-use App\Telefono;
+use App\Direccion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
-use App\Transformers\TelefonoTransformer;
+use App\Transformers\DireccionTransformer;
 
-class FolioTelefonoController extends ApiController
+class FolioDireccionController extends ApiController
 {
     public function __construct()
     {
         parent::__construct();
 
-        $this->middleware('transform.input:'. TelefonoTransformer::class)->only(['store']);
+        $this->middleware('transform.input:'. DireccionTransformer::class)->only(['store']);
     }
 
     /**
@@ -25,9 +25,9 @@ class FolioTelefonoController extends ApiController
      */
     public function index(Folio $folio)
     {
-        $telefonos = $folio->telefonos;
+        $direcciones = $folio->direcciones;
 
-        return $this->showAll($telefonos);
+        return $this->showAll($direcciones);
     }
 
     /**
@@ -39,8 +39,13 @@ class FolioTelefonoController extends ApiController
     public function store(Request $request, Folio $folio)
     {
         $reglas = [
-            'telefono' => 'required|regex:/^[0-9]{7,13}$/',
-            'id_usuario' => 'required|integer'
+            'id_usuario' => 'required|integer',
+            'calle' => 'required',
+            'numero' => 'required|regex:/^#?[ ]?[0-9]{1,8}$/',
+            'colonia' => 'required',
+            'ciudad' => 'required',
+            'estado' => 'required',
+            'codigo_postal' => 'required|integer|min:1|regex:/^[0-9]{4,5}$/'
         ];
 
         $this->validate($request, $reglas);
@@ -53,9 +58,9 @@ class FolioTelefonoController extends ApiController
 
         $datos = $request->all();
         $datos['id_folio'] = $folio->id_folio;
-        $telfono = Telefono::create($datos);
 
-        return $this->showOne($telfono);
+        $direccion = Direccion::create($datos);
 
+        return $this->showOne($direccion);
     }
 }

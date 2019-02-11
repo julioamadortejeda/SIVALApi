@@ -35,4 +35,17 @@ class TipoUsuarioTransformer extends TransformerAbstract
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
     }
+
+    public static function transformedAttribute($index)
+    {
+        $attribute = [
+            'id_tipo_usuario' => 'clave',
+            'nombre' => 'nombre',
+            'fecha_creacion' => 'fechaCreacion',
+            'fecha_modificacion' => 'fechaActualizacion',
+            'fecha_eliminacion' => 'fechaEliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
 }

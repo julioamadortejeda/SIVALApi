@@ -130,6 +130,7 @@ class FolioTransformer extends TransformerAbstract
         ];
     }
 
+    //10/02/2019 hasta el momento no se requiere esta funcion ni la se transformedAttribute
     public static function originalAttribute($index)
     {
         $attribute = [
@@ -176,6 +177,57 @@ class FolioTransformer extends TransformerAbstract
             'fechaCreacion' => 'fecha_creacion',
             'fechaActualizacion' => 'fecha_modificacion',
             'fechaEliminacion' => 'fecha_eliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
+
+    public static function transformedAttribute($index)
+    {
+        $attribute = [
+            'id_folio' => 'folio',
+            'fecha_captura' => 'fechaCaptura',
+            'telefono_asignado' => 'telefonoAsignado',
+            'telefono_portado' => 'telefonoPortado',
+            'fecha_cambio' => 'fechaCambioEstatus',
+            'clave_empresa' => 'claveEmpresa',
+            'nombre_empresa' => 'NombreEmpresa',
+            'facturacion_terceros' => 'facturacionTerceros',
+            'trafico_voz' => 'traficoVoz',
+            'voz_entrante' => 'traficoVozEntrante',
+            'voz_saliente' => 'traficoVozSaliente',
+            'fecha_trafico_voz' => 'fechaTraficoVoz',
+            'trafico_datos' => 'traficoDatos',
+            'fecha_trafico_datos' => 'fechaTraficoDatos',
+            'fecha_facturacion' => 'fechaFacturacion',
+            'descripcion_adeudo' => 'descripcionAdeudo',
+            'correo' => 'correo',
+            'fecha_nacimiento' => 'fechaNacimiento',
+            'id_aux' => 'IDAux',
+            'terminal' => 'terminal',
+            'distrito' => 'distrito',
+            'celular' => 'telefonoCelular',
+            'entrego_expediente' => 'entregoExpediente',
+            'tipo_expediente' => 'tipoExpediente',
+            'fecha_expediente' => 'fechaExpediente',
+            'estrategia' => 'estrategia',
+            'observaciones' => 'observaciones',
+            'respuesta_telmex' => 'respuestaTelmex',
+            'motivo_rechazo' => 'motivoRechazo',
+            'validado' => 'estaValidado',
+            'id_empleado' => 'empleado',
+            'id_area' => 'area',
+            'id_estatus_siac' => 'estatusSIAC',
+            'id_linea' => 'linea',
+            'id_linea_contratada' => 'lineaContratada',
+            'id_division' => 'division',
+            'id_tienda' => 'tienda',
+            'id_paquete' => 'paquete',
+            'id_servicio' => 'servicio',
+            'id_campana' => 'campana',
+            'fecha_creacion' => 'fechaCreacion',
+            'fecha_modificacion' => 'fechaActualizacion',
+            'fecha_eliminacion' => 'fechaEliminacion'
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;

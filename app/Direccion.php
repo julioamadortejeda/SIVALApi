@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Folio;
 use Illuminate\Database\Eloquent\Model;
+use App\Transformers\DireccionTransformer;
 
 /**
  * @property int $id_direccion
@@ -31,6 +32,11 @@ class Direccion extends Model
      * @var string
      */
     protected $table = 'direcciones';
+    const CREATED_AT = 'fecha_creacion';
+    const UPDATED_AT = 'fecha_modificacion';
+    const DELETED_AT = 'fecha_eliminacion';
+    protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = DireccionTransformer::class;
 
     /**
      * The primary key for the model.
@@ -42,7 +48,7 @@ class Direccion extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_usuario', 'id_folio', 'calle', 'numero', 'colonia', 'ciudad', 'estado', 'codigo_postal', 'datos_adicionales', 'fecha_creacion', 'fecha_modificacion', 'fecha_eliminacion'];
+    protected $fillable = ['id_usuario', 'id_folio', 'calle', 'numero', 'colonia', 'ciudad', 'estado', 'codigo_postal', 'datos_adicionales'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

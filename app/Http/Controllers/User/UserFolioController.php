@@ -6,9 +6,17 @@ use App\User;
 use App\Folio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Transformers\FolioTransformer;
 
 class UserFolioController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:'. FolioTransformer::class)->only(['update']);
+    }
+    
     /**
      * Display a listing of the resource.
      *

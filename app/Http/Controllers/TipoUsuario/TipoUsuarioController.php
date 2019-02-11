@@ -5,9 +5,17 @@ namespace App\Http\Controllers\TipoUsuario;
 use App\TipoUsuario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Transformers\TipoUsuarioTransformer;
 
 class TipoUsuarioController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:'. TipoUsuarioTransformer::class)->only(['store', 'update']);
+    }
+
     /**
      * Display a listing of the resource.
      *

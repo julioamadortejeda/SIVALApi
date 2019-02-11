@@ -7,9 +7,17 @@ use App\Empleado;
 use App\TipoUsuario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Transformers\UserTransformer;
 
 class UserController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:'. UserTransformer::class)->only(['store', 'update']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -112,7 +120,7 @@ class UserController extends ApiController
             $empleado = Empleado::find($request->id_empleado);
 
             if($user->esAdministrador() || $user->esValidacion()) {
-                if(!is_null($empleado) || !is_null($request->id_empleado))
+                //if(!is_null($empleado) || !is_null($request->id_empleado))
                     return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $user->tipo_usuario->nombre), 409);
             }
             else {

@@ -38,10 +38,30 @@ class UserTransformer extends TransformerAbstract
         $attribute = [
             'clave' => 'id_usuario',
             'nombre' => 'nombre',
+            'empleado' => 'id_empleado',
+            'contraseña' => 'password',
+            'confirmacionContraseña' => 'password_confirmation',
             'categoria' => 'id_tipo_usuario',
             'fechaCreacion' => 'fecha_creacion',
             'fechaActualizacion' => 'fecha_modificacion',
             'fechaEliminacion' => 'fecha_eliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
+
+    public static function transformedAttribute($index)
+    {
+        $attribute = [
+            'id_usuario' => 'clave',
+            'nombre' => 'nombre',
+            'id_empleado' => 'empleado',
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmacionContraseña',
+            'id_tipo_usuario' => 'categoria',
+            'fecha_creacion' => 'fechaCreacion',
+            'fecha_modificacion' => 'fechaActualizacion',
+            'fecha_eliminacion' => 'fechaEliminacion'
         ];
 
         return isset($attribute[$index]) ? $attribute[$index] : null;

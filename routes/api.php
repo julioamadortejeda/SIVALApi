@@ -25,7 +25,7 @@ Route::post('folios', 'Folio\FolioController@importarExcel');
 Route::resource('folios.audios', 'Folio\FolioAudioController', ['only' => ['index', 'store']]);
 Route::resource('folios.documentos', 'Folio\FolioDocumentoController', ['only' => ['index', 'store']]);
 Route::resource('folios.telefonos', 'Folio\FolioTelefonoController', ['only' => ['index', 'store']]);
-Route::resource('folios.telefonos', 'Folio\FolioTelefonoController', ['only' => ['index', 'store']]);
+Route::resource('folios.direcciones', 'Folio\FolioDireccionController', ['only' => ['index', 'store']]);
 
 /* 
 	Folios Validacion
@@ -68,3 +68,13 @@ Route::resource('documentos', 'Documento\DocumentoController', ['only' => ['dest
 	Audios
 */
 Route::resource('audios', 'Audio\AudioController', ['only' => ['destroy']]);
+
+/*
+	Telefonos
+*/
+Route::resource('telefonos', 'Telefono\TelefonoController', ['only' => ['index', 'destroy']]);
+
+/*
+	Direcciones
+*/
+Route::resource('direcciones', 'Direccion\DireccionController', ['only' => ['index', 'destroy']]);

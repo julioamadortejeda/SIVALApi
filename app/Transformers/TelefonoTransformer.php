@@ -43,4 +43,19 @@ class TelefonoTransformer extends TransformerAbstract
 
         return isset($attribute[$index]) ? $attribute[$index] : null;
     }
+
+    public static function transformedAttribute($index)
+    {
+        $attribute = [
+            'id_telefono' => 'clave',
+            'telefono' => 'numeroTelefono',
+            'id_folio' => 'folio',
+            'id_usuario' => 'usuario',
+            'fecha_creacion' => 'fechaCreacion',
+            'fecha_modificacion' => 'fechaActualizacion',
+            'fecha_eliminacion' => 'fechaEliminacion'
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
 }

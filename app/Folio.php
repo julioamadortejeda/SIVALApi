@@ -17,6 +17,7 @@ use App\Rechazo;
 use App\Empleado;
 use App\Servicio;
 use App\Telefono;
+use App\Direccion;
 use App\Documento;
 use App\Estrategia;
 use App\FolioOrden;
@@ -209,6 +210,11 @@ class Folio extends Model
     public function telefonos()
     {
         return $this->hasMany(Telefono::class, 'id_folio', 'id_folio');
+    }
+
+    public function direcciones()
+    {
+        return $this->hasMany(Direccion::class, 'id_folio', 'id_folio');
     }
 
     public function audios()
