@@ -5,6 +5,7 @@ namespace App;
 use App\Empleado;
 use App\TipoUsuario;
 use App\Scopes\UserScope;
+use Laravel\Passport\HasApiTokens;
 use App\Transformers\UserTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -27,7 +28,7 @@ class User extends Authenticatable
 {
     public const USER_ADMINISTRADOR = 'administrador';
     public const USER_VALIDACION = 'validacion';
-    use Notifiable, SoftDeletes;
+    use Notifiable, HasApiTokens, SoftDeletes;
     
     const CREATED_AT = 'fecha_creacion';
     const UPDATED_AT = 'fecha_modificacion';
