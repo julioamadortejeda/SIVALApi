@@ -22,12 +22,18 @@ class DireccionTransformer extends TransformerAbstract
                 'nombre' => (string)$direccion->user->nombre,
                 'categoria' => (string)$direccion->user->tipo_usuario->nombre
             ],
-            'calle' => (string)$direccion->calle,
-            'numero' => (string)$direccion->numero,
-            'colonia' => (string)$direccion->colonia,
-            'ciudad' => (string)$direccion->ciudad, 
-            'estado' => (string)$direccion->estado,
-            'codigoPostal' => (string)$direccion->codigo_postal,
+            'dirreccion' => (string)$direccion->calle . ' ' .
+            (string)$direccion->numero  . ' ' .
+            (string)$direccion->colonia  . ' ' .
+            (string)$direccion->ciudad  . ' ' .
+            (string)$direccion->estado  . ' ' .
+            (string)$direccion->codigo_postal,
+            // 'calle' => (string)$direccion->calle,
+            // 'numero' => (string)$direccion->numero,
+            // 'colonia' => (string)$direccion->colonia,
+            // 'ciudad' => (string)$direccion->ciudad, 
+            // 'estado' => (string)$direccion->estado,
+            // 'codigoPostal' => (string)$direccion->codigo_postal,
             'adicional' => empty($direccion->datos_adicionales) ? null : (string)$direccion->datos_adicionales,
             'fechaCreacion' => (string)$direccion->fecha_creacion,
             'fechaActualizacion' => (string)$direccion->fecha_modificacion,

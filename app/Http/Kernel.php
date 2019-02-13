@@ -59,6 +59,8 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
+        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'firma' => \App\Http\Middleware\FirmaMiddleware::class,
         'transform.input' => \App\Http\Middleware\TransformInput::class,

@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentoController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('scope:administrador');
+    }
+    
     /**
      * Remove the specified resource from storage.
      *

@@ -8,6 +8,14 @@ use App\Http\Controllers\ApiController;
 
 class TelefonoController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        //$this->middleware('transform.input:'. TipoUsuarioTransformer::class)->only(['store', 'update']);
+        $this->middleware('scope:administrador');
+    }
+
     /**
      * Display a listing of the resource.
      *

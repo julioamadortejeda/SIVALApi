@@ -14,6 +14,7 @@ class TipoUsuarioController extends ApiController
         parent::__construct();
 
         $this->middleware('transform.input:'. TipoUsuarioTransformer::class)->only(['store', 'update']);
+        $this->middleware('scope:administrador');
     }
 
     /**

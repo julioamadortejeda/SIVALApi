@@ -9,6 +9,13 @@ use App\Http\Controllers\ApiController;
 
 class EmpleadoController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('scope:administrador');
+    }
+
     /**
      * Display a listing of the resource.
      *

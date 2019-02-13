@@ -9,6 +9,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,6 +47,27 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($exception instanceof OAuthServerException) {
+            $payload = [];
+            
+            if($exception->getErrorType() === 'invalid_credentials') {
+                $payload = [
+                    'error' => trans('auth.credencialesInvalidas'),
+                    'code' => 401
+                ];
+            }   
+            
+            if($exception->getErrorType() === 'invalid_request') {
+                $payload = [
+                    'error' => trans('auth.peticionInvalida'),
+                    'code' => 400
+                ];
+            }
+            
+            if(!empty($payload))
+                $exception->setPayload($payload);
+        }
+
         parent::report($exception);
     }
 

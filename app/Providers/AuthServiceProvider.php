@@ -30,5 +30,10 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
         Passport::tokensExpireIn(Carbon::now()->addDay(30));
         Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
+
+        Passport::tokensCan([
+            'administrador' => 'Perimisos de administrador',
+            'modificar-folios' => 'Permiso para modificar solamente informacion de folios'
+        ]);
     }
 }

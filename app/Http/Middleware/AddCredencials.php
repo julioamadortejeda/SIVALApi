@@ -19,8 +19,8 @@ class AddCredencials
         //desde la aplicacion fontend
         $request->request->add([
             'grant_type' => 'password',
-            'client_id' => 3,
-            'client_secret' => 'hsOMGm8xlRbMv67D7gcFkI68cwHHLDkQ1f9m0YZH',
+            'client_id' => 2,
+            'client_secret' => '00VlXXOEWmhLkBLHReRuO4cTFNVXMDdSF56XUrs1',
         ]);
 
         return $next($request);

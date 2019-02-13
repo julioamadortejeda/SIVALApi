@@ -10,6 +10,13 @@ use App\Http\Controllers\ApiController;
 
 class FolioController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('scope:administrador')->only('importarExcel');
+    }
+
     /**
      * Display a listing of the resource.
      *

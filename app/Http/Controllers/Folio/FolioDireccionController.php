@@ -16,6 +16,8 @@ class FolioDireccionController extends ApiController
         parent::__construct();
 
         $this->middleware('transform.input:'. DireccionTransformer::class)->only(['store']);
+        $this->middleware('scope:administrador')->only('index');
+        $this->middleware('scope:administrador,modificar-folios')->only(['store']);
     }
 
     /**

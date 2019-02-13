@@ -10,6 +10,14 @@ use App\Http\Controllers\ApiController;
 
 class FolioAudioController extends ApiController
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('scope:administrador')->only('index');
+        $this->middleware('scope:administrador,modificar-folios')->only(['store']);
+    }
+
     /**
      * Display a listing of the resource.
      *
