@@ -26,10 +26,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    public const USER_ADMINISTRADOR = 'administrador';
-    public const USER_VALIDACION = 'validacion';
     use Notifiable, HasApiTokens, SoftDeletes;
     
+    public const USER_ADMINISTRADOR = 'administrador';
+    public const USER_VALIDACION = 'validacion';
     const CREATED_AT = 'fecha_creacion';
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
@@ -85,5 +85,9 @@ class User extends Authenticatable
     {
         return strtolower($this->tipo_usuario->nombre) == User::USER_VALIDACION;
         //return is_null($this->id_empleado) && !$this->esAdministrador();
+    }
+
+    public function findForPassport($username) {
+        return $this->where('nombre', $username)->first();
     }
 }

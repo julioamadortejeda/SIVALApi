@@ -79,13 +79,17 @@ Route::resource('telefonos', 'Telefono\TelefonoController', ['only' => ['index',
 */
 Route::resource('direcciones', 'Direccion\DireccionController', ['only' => ['index', 'destroy']]);
 
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken')->middleware('add.credentials');
 
-Route::group(['prefix' => 'auth'], function () {
-    Route::post('login', 'AuthController@login');
-    Route::post('signup', 'AuthController@signup');
+//***************************************************************************
+// RUTAS PARA OBTENER UN TOKEN PERSONAL, POR EL MOMENTO SE USARA UN TOKEN DE TIPO PASSWORD
+//***************************************************************************/
+// Route::group(['prefix' => 'auth'], function () {
+//     Route::post('login', 'AuthController@login');
+//     Route::post('signup', 'AuthController@signup');
   
-    Route::group(['middleware' => 'auth:api'], function() {
-        Route::get('logout', 'AuthController@logout');
-        Route::get('user', 'AuthController@user');
-    });
-});
+//     Route::group(['middleware' => 'auth:api'], function() {
+//         Route::get('logout', 'AuthController@logout');
+//         Route::get('user', 'AuthController@user');
+//     });
+// });
