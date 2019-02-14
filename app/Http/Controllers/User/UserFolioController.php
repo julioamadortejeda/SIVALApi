@@ -16,7 +16,7 @@ class UserFolioController extends ApiController
 
         $this->middleware('transform.input:'. FolioTransformer::class)->only(['update']);
         $this->middleware('scope:administrador')->only(['destroy']);
-        $this->middleware('scope:modificar-folios')->only(['update']);
+        $this->middleware('scope:administrador,modificar-folios')->only(['update']);
     }
     
     /**

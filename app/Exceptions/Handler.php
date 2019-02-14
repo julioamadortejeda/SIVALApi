@@ -115,6 +115,11 @@ class Handler extends ExceptionHandler
             if ($codigo == 1451) {
                 return $this->errorResponse('No se puede eliminar el recurso ya que esta relacionado con algun otro.', 409);
             }
+
+            if ($codigo == 1062) {
+                dd($exception);
+                return $this->errorResponse('Ya existe un registro con los mismos datos.', 409);
+            }
         }
 
         if (config('app.debug')) {
