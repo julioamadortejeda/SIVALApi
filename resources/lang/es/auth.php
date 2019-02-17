@@ -18,6 +18,7 @@ return [
 
     /* Mensajes custom*/
     'credencialesInvalidas' => 'Usuario o contraseña no validos.',
-    'peticionInvalida' => 'La peticion requiere los parametros de nombre de usuario y contraseña.'
+    'peticionInvalida' => 'La peticion requiere los parametros de nombre de usuario y contraseña.',
+    'clienteInvalido' => 'El cliente de inicio de sesion no es valido.',
 
 ];

@@ -63,6 +63,13 @@ class Handler extends ExceptionHandler
                     'code' => 400
                 ];
             }
+
+            if ($exception->getErrorType() === 'invalid_client') {
+                $payload = [
+                    'error' => trans('auth.clienteInvalido'),
+                    'code' => 401
+                ];
+            }
             
             if(!empty($payload))
                 $exception->setPayload($payload);

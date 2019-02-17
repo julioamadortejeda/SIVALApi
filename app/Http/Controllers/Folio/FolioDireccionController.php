@@ -41,9 +41,9 @@ class FolioDireccionController extends ApiController
     public function store(Request $request, Folio $folio)
     {
         $reglas = [
-            'id_usuario' => 'required|integer',
             'calle' => 'required',
-            'numero' => 'required|regex:/^#?[ ]?[0-9]{1,8}$/',
+            //'numero' => 'required|regex:/^#?[ ]?[0-9]{1,8}$/',
+            'numero' => 'required|min:1',
             'colonia' => 'required',
             'ciudad' => 'required',
             'estado' => 'required',
@@ -52,17 +52,17 @@ class FolioDireccionController extends ApiController
 
         $this->validate($request, $reglas);
 
-        $user = User::find($request->id_usuario);
-
-        if(is_null($user)) {
-            return $this->errorResponse('Usuario no valido.', 409);
-        }
-
         $datos = $request->all();
+        //$datos['numero'] = preg_replace('/^#?[ ]?/', '', $request->numero);
         $datos['id_folio'] = $folio->id_folio;
+        $datos['id_usuario'] = $request->user()->id_usuario;
+        
+        if ($request->has('datos_adicionales')) {
+            $datos['datos_adicionales'] = str_replace("'", "", $request->datos_adicionales);
+        }
 
         $direccion = Direccion::create($datos);
 
-        return $this->showOne($direccion);
+        return $this->showOne($direccion, 201);
     }
 }

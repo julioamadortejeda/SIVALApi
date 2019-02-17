@@ -42,22 +42,16 @@ class FolioTelefonoController extends ApiController
     {
         $reglas = [
             'telefono' => 'required|regex:/^[0-9]{7,13}$/',
-            'id_usuario' => 'required|integer'
         ];
 
         $this->validate($request, $reglas);
 
-        $user = User::find($request->id_usuario);
-
-        if(is_null($user)) {
-            return $this->errorResponse('Usuario no valido.', 409);
-        }
-
         $datos = $request->all();
         $datos['id_folio'] = $folio->id_folio;
+        $datos['id_usuario'] = $request->user()->id_usuario;
         $telfono = Telefono::create($datos);
 
-        return $this->showOne($telfono);
+        return $this->showOne($telfono, 201);
 
     }
 }

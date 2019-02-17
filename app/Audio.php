@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use App\Folio;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $fecha_modificacion
  * @property string $fecha_eliminacion
  * @property Folio $folio
+ * @property User $usuario
  */
 class Audio extends Model
 {
@@ -38,7 +40,7 @@ class Audio extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_folio', 'nombre', 'ruta'];
+    protected $fillable = ['id_folio', 'id_usuario', 'nombre', 'ruta'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -46,5 +48,13 @@ class Audio extends Model
     public function folio()
     {
         return $this->belongsTo(Folio::class, 'id_folio', 'id_folio');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
     }
 }

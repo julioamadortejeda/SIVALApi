@@ -52,11 +52,12 @@ class FolioDocumentoController extends ApiController
             $datos['nombre'] = $documento->getClientOriginalName();
             $datos['ruta'] = $ruta;
             $datos['id_folio'] = $folio->id_folio;
+            $datos['id_usuario'] = $request->user()->id_usuario;
 
             $doc = Documento::create($datos);
             $documentos->push($doc);
         }
 
-        return $this->showAll($documentos);
+        return $this->showAll($documentos, 201);
     }
 }

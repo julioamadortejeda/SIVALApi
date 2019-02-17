@@ -16,7 +16,7 @@ class UserController extends ApiController
         parent::__construct();
 
         $this->middleware('transform.input:'. UserTransformer::class)->only(['store', 'update']);
-        $this->middleware('scope:administrador')->except(['show']);
+        $this->middleware('scope:administrador');
     }
 
     /**
@@ -39,9 +39,9 @@ class UserController extends ApiController
      */
     public function store(Request $request)
     {
-        $datos = $request->all();
         $reglas = [
-            'nombre' => 'required|unique:users,nombre,NULL,id_usuario,fecha_eliminacion,NULL|min:6',
+            'user_name' => 'required|regex:/^[A-Za-z]{6,}$/|unique:users,user_name,NULL,id_usuario,fecha_eliminacion,NULL|min:6',
+            'nombre' => 'required|min:6',
             'password' => 'required|min:6|confirmed',
             'id_tipo_usuario' => 'required',
             'id_empleado' => 'integer|min:1'
@@ -49,6 +49,7 @@ class UserController extends ApiController
 
         $this->validate($request, $reglas);
 
+        $datos = $request->all();
         $empleado  = null;
         if ($request->has('id_empleado'))
             $empleado = Empleado::find($request->id_empleado);
@@ -109,7 +110,8 @@ class UserController extends ApiController
     public function update(Request $request, User $user)
     {
         $reglas = [
-            'nombre' => 'unique:users,nombre,' . $user->id_usuario . ',id_usuario',
+            'user_name' => 'regex:/^[A-Za-z]{6,}$/|unique:users,user_name,' . $user->id_usuario . ',id_usuario',
+            'nombre' => 'min:6',
             'password' => 'min:6|confirmed',
             'id_empleado' => 'integer|min:1',
         ];
@@ -145,6 +147,9 @@ class UserController extends ApiController
         //     else
         //         return $this->errorResponse('El tipo de usuario no existe.', 409);
         // }
+
+        if ($request->has('user_name') && $request->user_name != $user->user_name)
+            $user->user_name = $request->user_name;
             
         if ($request->has('nombre') && $request->nombre != $user->nombre)
             $user->nombre = $request->nombre;
@@ -157,7 +162,7 @@ class UserController extends ApiController
 
         $user->save();
         $user->refresh();
-        return $this->showOne($user, 201);
+        return $this->showOne($user);
     }
 
     /**
@@ -171,6 +176,6 @@ class UserController extends ApiController
         //$user = User::findOrFail($id);
         $user->delete();
 
-        return $this->showOne($user, 200);
+        return $this->showOne($user);
     }
 }

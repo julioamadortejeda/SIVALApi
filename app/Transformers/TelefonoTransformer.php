@@ -19,9 +19,9 @@ class TelefonoTransformer extends TransformerAbstract
             'numeroTelefono' => (string) $telefono->telefono,
             'folio' => (int)$telefono->id_folio,
             'usuario' => [
-                'clave' => (int)$telefono->user->id_usuario,
-                'nombre' => (string)$telefono->user->nombre,
-                'categoria' => (string)$telefono->user->tipo_usuario->nombre
+                'clave' => (int)$telefono->usuario->id_usuario,
+                'nombre' => (string)$telefono->usuario->nombre,
+                'categoria' => (string)$telefono->usuario->tipo_usuario->nombre
             ],
             'fechaCreacion' => (string)$telefono->fecha_creacion,
             'fechaActualizacion' => (string)$telefono->fecha_modificacion,

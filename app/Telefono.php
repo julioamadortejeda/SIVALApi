@@ -16,7 +16,7 @@ use App\Transformers\TelefonoTransformer;
  * @property string $fecha_modificacion
  * @property string $fecha_eliminacion
  * @property Folio $folio
- * @property User $user
+ * @property User $usuario
  */
 class Telefono extends Model
 {
@@ -56,7 +56,7 @@ class Telefono extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function usuario()
     {
         return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
     }

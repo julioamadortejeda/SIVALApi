@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 */
 //Route::resource('folios', 'Folio\FolioController', ['only' => ['show']]);
 Route::post('folios', 'Folio\FolioController@importarExcel');
+Route::resource('folios', 'Folio\FolioController', ['except' => ['create', 'edit', 'store']]);
 Route::resource('folios.audios', 'Folio\FolioAudioController', ['only' => ['index', 'store']]);
 Route::resource('folios.documentos', 'Folio\FolioDocumentoController', ['only' => ['index', 'store']]);
 Route::resource('folios.telefonos', 'Folio\FolioTelefonoController', ['only' => ['index', 'store']]);
@@ -51,7 +52,7 @@ Route::resource('servicios', 'Servicio\ServicioController', ['only' => ['index']
 	Usuarios
 */
 Route::resource('users', 'User\UserController', ['except' => ['create','edit']]);
-Route::resource('users.folios', 'User\UserFolioController', ['except' => ['create', 'edit', 'store']]);
+//Route::resource('users.folios', 'User\UserFolioController', ['except' => ['create', 'edit', 'store']]);
 
 /*
 	Tipos Usuarios

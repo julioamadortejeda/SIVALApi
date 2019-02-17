@@ -18,13 +18,13 @@ class AddCredencials
     public function handle($request, Closure $next)
     {
         $credenciales = [
-            'nombre' => $request->username,
+            'user_name' => $request->username,
             'password' => $request->password
         ];
 
         $scope = '';
         if (Auth::validate($credenciales)) {
-           $user = User::where('nombre', $credenciales['nombre'])->first();
+           $user = User::where('user_name', $credenciales['user_name'])->first();
            if(!is_null($user)) {
                 if($user->esAdministrador())
                     $scope = 'administrador';
@@ -38,8 +38,8 @@ class AddCredencials
         //desde la aplicacion fontend
         $request->request->add([
             'grant_type' => 'password',
-            'client_id' => 2,
-            'client_secret' => '00VlXXOEWmhLkBLHReRuO4cTFNVXMDdSF56XUrs1',
+            'client_id' => 5,
+            'client_secret' => 'PMKkBNR9jTgbivozT5hwPb2WLsmTNxroQunVV7MV',
             'scope' => $scope,
         ]);
 

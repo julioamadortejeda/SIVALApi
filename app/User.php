@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int $id_usuario
  * @property int $id_empleado
  * @property int $id_tipo_usuario
+ * @property string $user_name
  * @property string $nombre
  * @property string $password
  * @property string $fecha_creacion
@@ -52,7 +53,7 @@ class User extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['id_empleado', 'id_tipo_usuario', 'nombre', 'password'];
+    protected $fillable = ['id_empleado', 'id_tipo_usuario', 'user_name', 'nombre', 'password'];
 
     protected static function boot()
     {
@@ -88,6 +89,6 @@ class User extends Authenticatable
     }
 
     public function findForPassport($username) {
-        return $this->where('nombre', $username)->first();
+        return $this->where('user_name', $username)->first();
     }
 }

@@ -38,7 +38,7 @@ class TipoUsuarioController extends ApiController
     public function store(Request $request)
     {
         $reglas = ['nombre' => 'required|unique:TiposUsuarios,nombre'];
-        //$reglas = ['nombre' => 'required|unique:TiposUsuarios'];
+
         $this->validate($request, $reglas);
 
         $campos = $request->all();

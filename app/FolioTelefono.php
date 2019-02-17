@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $fecha_modificacion
  * @property string $fecha_eliminacion
  * @property Folio $folio
+ * @property User $usuario
  */
 class FolioTelefono extends Model
 {
@@ -51,7 +52,7 @@ class FolioTelefono extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function usuario()
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }

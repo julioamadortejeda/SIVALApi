@@ -22,7 +22,7 @@ use App\Transformers\DireccionTransformer;
  * @property string $fecha_modificacion
  * @property string $fecha_eliminacion
  * @property Folio $folio
- * @property User $user
+ * @property User $usuario
  */
 class Direccion extends Model
 {
@@ -61,7 +61,7 @@ class Direccion extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function usuario()
     {
         return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
     }

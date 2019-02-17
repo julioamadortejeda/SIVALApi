@@ -6,6 +6,7 @@ use App\Folio;
 use App\Imports\FolioImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Transformers\FolioTransformer;
 use App\Http\Controllers\ApiController;
 
 class FolioController extends ApiController
@@ -14,7 +15,9 @@ class FolioController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('scope:administrador')->only('importarExcel');
+        $this->middleware('transform.input:'. FolioTransformer::class)->only(['update']);
+        $this->middleware('scope:administrador')->only(['destroy', 'importarExcel']);
+        $this->middleware('scope:administrador,modificar-folios')->only(['update']);
     }
 
     /**
@@ -24,20 +27,24 @@ class FolioController extends ApiController
      */
     public function index()
     {
-        // $folios = Folio::take(500)->get();
-        
-        // return $this->showAll($folios);
-    }
+        $folios = null;
+        $user = request()->user();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        if ($user->esAdministrador()) {
+            $folios = Folio::take(500)->get();
+        }
+        elseif ($user->esValidacion()) {
+            $folios = Folio::where('validado', false)->take(500)->get();
+        }
+        else {
+            $folios = Folio::whereHas('empleado', function($query) use($user){
+                $query
+                ->where('id_empleado', $user->id_empleado)
+                ->orWhere('id_gerente', $user->id_empleado);   
+            })->get();
+        }
+
+        return $this->showAll($folios);
     }
 
     /**
@@ -48,7 +55,16 @@ class FolioController extends ApiController
      */
     public function show(Folio $folio)
     {
-        //return $this->showOne($folio);
+        $user = request()->user();
+
+        if (!($user->esAdministrador() || $user->esValidacion())) {
+            if ($folio->id_empleado != $user->id_empleado && $folio->empleado->id_gerente != $user->id_empleado) {
+                return $this->errorResponse("El folio no pertenece al empleado ($user->id_empleado " 
+                                            . $user->empleado->nombre . ")", 409);
+            }
+        }
+
+        return $this->showOne($folio);
     }
 
     /**
@@ -58,9 +74,32 @@ class FolioController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Folio $folio)
     {
-        //
+        $user = $request->user();
+
+        if (!($user->esAdministrador() || $user->esValidacion()))
+            return $this->errorResponse('No se tienen permisos para modificar el folio.', 409);
+
+        $reglas = [
+            'validado' => 'required|bool'
+        ];
+
+        $this->validate($request, $reglas);
+
+        if ($folio->validado != $request->validado) {
+            if ($folio->estaValidado() && $request->validado == false && !$user->esAdministrador()) {
+                return $this->errorResponse('No se tienen permisos para quitar la validacion al folio.', 422);
+            }
+        }
+        else{
+            return $this->errorResponse('Se debe especificar un valor diferente para actualizar.', 422);
+        }
+
+        $folio->validado = $request->validado;
+        $folio->save();
+
+        return $this->showOne($folio);
     }
 
     /**
@@ -69,12 +108,17 @@ class FolioController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Folio $folio)
     {
-        // $folio = Folio::findOrFail($id);
-        // $folio->delete();
+        $user = request()->user();
+        
+        if (!$user->esAdministrador()) {   
+            return $this->errorResponse('No se tienen permisos para eliminar el folio.', 409);
+        }
 
-        // return $this->showOne($folio, 200);
+        $folio->delete();
+
+        return $this->showOne($folio);
     }
 
     public function importarExcel() 

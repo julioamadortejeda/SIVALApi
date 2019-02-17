@@ -13,7 +13,7 @@ class AudioController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('scope:administrador');
+        $this->middleware('scope:administrador')->only('destroy');
     }
     
     /**

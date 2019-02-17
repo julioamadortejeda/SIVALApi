@@ -27,6 +27,7 @@ class UserFolioController extends ApiController
     public function index(User $user)
     {
         $folios = null;
+        
         if ($user->esAdministrador()) {
             $folios = Folio::take(500)->get();
         }
@@ -113,6 +114,6 @@ class UserFolioController extends ApiController
 
         $folio->delete();
 
-        return $this->showOne($folio, 200);
+        return $this->showOne($folio);
     }
 }

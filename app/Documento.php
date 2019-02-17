@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use App\Folio;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $fecha_creacion
  * @property string $fecha_modificacion
  * @property string $fecha_eliminacion
+ * @property Folio $usuario
+ * @property User $usuario
  */
 class Documento extends Model
 {
@@ -37,7 +40,7 @@ class Documento extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_folio', 'nombre', 'ruta'];
+    protected $fillable = ['id_folio', 'id_usuario', 'nombre', 'ruta'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -45,6 +48,14 @@ class Documento extends Model
     public function folio()
     {
         return $this->belongsTo(Folio::class, 'id_folio', 'id_folio');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
     }
 
 }

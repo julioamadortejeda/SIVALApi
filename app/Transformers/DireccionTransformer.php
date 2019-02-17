@@ -18,14 +18,14 @@ class DireccionTransformer extends TransformerAbstract
             'clave' => (int)$direccion->id_direccion,
             'folio' => (int)$direccion->id_folio,
             'usuario' => [
-                'clave' => (int)$direccion->user->id_usuario,
-                'nombre' => (string)$direccion->user->nombre,
-                'categoria' => (string)$direccion->user->tipo_usuario->nombre
+                'clave' => (int)$direccion->usuario->id_usuario,
+                'nombre' => (string)$direccion->usuario->nombre,
+                'categoria' => (string)$direccion->usuario->tipo_usuario->nombre
             ],
             'dirreccion' => (string)$direccion->calle . ' ' .
-            (string)$direccion->numero  . ' ' .
-            (string)$direccion->colonia  . ' ' .
-            (string)$direccion->ciudad  . ' ' .
+            '#' . (string)$direccion->numero  . ' ' .
+            (string)$direccion->colonia  . ', ' .
+            (string)$direccion->ciudad  . ', ' .
             (string)$direccion->estado  . ' ' .
             (string)$direccion->codigo_postal,
             // 'calle' => (string)$direccion->calle,
