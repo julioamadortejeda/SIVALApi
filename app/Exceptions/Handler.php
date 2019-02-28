@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
             if($exception->getErrorType() === 'invalid_credentials') {
                 $payload = [
                     'error' => trans('auth.credencialesInvalidas'),
-                    'code' => 401
+                    'code' => 400
                 ];
             }   
             
@@ -67,7 +67,7 @@ class Handler extends ExceptionHandler
             if ($exception->getErrorType() === 'invalid_client') {
                 $payload = [
                     'error' => trans('auth.clienteInvalido'),
-                    'code' => 401
+                    'code' => 400
                 ];
             }
             
