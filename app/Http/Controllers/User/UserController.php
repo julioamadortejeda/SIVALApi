@@ -15,7 +15,7 @@ class UserController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('transform.input:'. UserTransformer::class)->only(['store', 'update']);
+        $this->middleware('transform.input:' . UserTransformer::class)->only(['store', 'update']);
         $this->middleware('scope:administrador');
     }
 
@@ -52,34 +52,33 @@ class UserController extends ApiController
         $datos = $request->all();
         $empleado  = null;
         if ($request->has('id_empleado'))
-            $empleado = Empleado::find($request->id_empleado);
-        
+        $empleado = Empleado::find($request->id_empleado);
+
         $tipoUsuario = TipoUsuario::find($request->id_tipo_usuario);
 
         if (!is_null($tipoUsuario)) {
-            if(strtolower($tipoUsuario->nombre) == User::USER_ADMINISTRADOR || strtolower($tipoUsuario->nombre) == User::USER_VALIDACION) {
-                if(!is_null($empleado) || !is_null($request->id_empleado)) {
+            if (strtolower($tipoUsuario->nombre) == User::USER_ADMINISTRADOR || strtolower($tipoUsuario->nombre) == User::USER_VALIDACION) {
+                if (!is_null($empleado) || !is_null($request->id_empleado)) {
                     return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $tipoUsuario->nombre), 409);
                 }
-                
+
                 $datos['id_empleado'] = null;
-            }
-            else {
+            } else {
                 if (is_null($empleado)) {
                     if (is_null($request->id_empleado)) {
                         return $this->errorResponse(sprintf('Se requiere un Empleado para el tipo de usuario (%s)', $tipoUsuario->nombre), 409);
                     }
                     return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
-                }
-                else
+                } else {
                     $datos['id_empleado'] = $empleado->id_empleado;
+                }
             }
 
             $datos['id_tipo_usuario'] = $tipoUsuario->id_tipo_usuario;
-        }
-        else
+        } else {
             return $this->errorResponse('El tipo de usuario no existe.', 409);
-            
+        }
+
         $datos['password'] = bcrypt($request->password);
 
         $usuario = User::create($datos);
@@ -122,18 +121,17 @@ class UserController extends ApiController
         if ($request->has('id_empleado')) {
             $empleado = Empleado::find($request->id_empleado);
 
-            if($user->esAdministrador() || $user->esValidacion()) {
+            if ($user->esAdministrador() || $user->esValidacion()) {
                 //if(!is_null($empleado) || !is_null($request->id_empleado))
-                    return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $user->tipo_usuario->nombre), 409);
-            }
-            else {
+                return $this->errorResponse(sprintf('El tipo de usuario (%s) no debe tener un empleado asignado.', $user->tipo_usuario->nombre), 409);
+            } else {
                 if (is_null($empleado))
-                    return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
+                return $this->errorResponse(sprintf('El Empleado (%s), no es valido.', $request->id_empleado), 409);
                 else
-                    $user->id_empleado  = $empleado->id_empleado;
+                $user->id_empleado  = $empleado->id_empleado;
             }
         }
-            
+
         //*/********************************************************************* */
         // POR EL MOMENTO NO SE PUEDE EDITAR EL TIPO DE USUARIO
         //*********************************************************************** */
@@ -149,16 +147,16 @@ class UserController extends ApiController
         // }
 
         if ($request->has('user_name') && $request->user_name != $user->user_name)
-            $user->user_name = $request->user_name;
-            
+        $user->user_name = $request->user_name;
+
         if ($request->has('nombre') && $request->nombre != $user->nombre)
-            $user->nombre = $request->nombre;
+        $user->nombre = $request->nombre;
 
         if ($request->has('password'))
-            $user->password = bcrypt($request->password);
+        $user->password = bcrypt($request->password);
 
-        if (!$user->isDirty()) 
-            return $this->errorResponse('Se debe espeificar un valor diferente para actualizar.', 422);
+        if (!$user->isDirty())
+        return $this->errorResponse('Se debe espeificar un valor diferente para actualizar.', 422);
 
         $user->save();
         $user->refresh();
@@ -177,5 +175,21 @@ class UserController extends ApiController
         $user->delete();
 
         return $this->showOne($user);
+    }
+
+    public function validarCredenciales(Request $request)
+    {
+
+        $reglas = [
+            'username' => 'required'
+        ];
+
+        $this->validate($request, $reglas);
+
+        if ($request->user()->user_name != $request->username) {
+            return response()->json(['error' => 'Token no valido', 'code' => 400], 400);
+        }
+
+        return response()->json(['data' => 'Token valido.', 'code' => 200], 200);
     }
 }
