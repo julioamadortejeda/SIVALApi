@@ -45,82 +45,83 @@ class FolioTransformer extends TransformerAbstract
             'respuestaTelmex' => (string)$folio->respuesta_telmex,
             //'motivoRechazo' => (string)$folio->motivo_rechazo,
             'estaValidado' => (bool)$folio->validado,
+            'ordenesConcatenadas' => $this->concatenarOrdenes($folio->folio_orden),
             'ordenes' => $this->agregarOrdenes($folio->folio_orden),
-            'empleado' => is_null($folio->empleado) ? null : [ 
+            'empleado' => is_null($folio->empleado) ? null : [
                 'clave' => (int)$folio->id_empleado,
                 'nombre' => (string)$folio->empleado->nombre,
                 'RFC' => (string)$folio->empleado->rfc,
-                'estatus' => (string)$folio->empleado->estatus,                      
+                'estatus' => (string)$folio->empleado->estatus,
             ],
-            'area' => is_null($folio->id_area) ? null : [ 
+            'area' => is_null($folio->id_area) ? null : [
                 'clave' => (int)$folio->id_area,
                 'nombre' => (string)$folio->area->nombre
             ],
-            'estatusSIAC' => is_null($folio->id_estatus_siac) ? null : [ 
+            'estatusSIAC' => is_null($folio->id_estatus_siac) ? null : [
                 'clave' => (int)$folio->id_estatus_siac,
                 'nombre' => (string)$folio->estatus_siac->nombre
             ],
-            'linea' => is_null($folio->id_linea) ? null : [ 
+            'linea' => is_null($folio->id_linea) ? null : [
                 'clave' => (int)$folio->id_linea,
                 'nombre' => (string)$folio->linea->nombre
             ],
-            'lineaContratada' => is_null($folio->id_linea_contratada) ? null : [ 
+            'lineaContratada' => is_null($folio->id_linea_contratada) ? null : [
                 'clave' => (int)$folio->id_linea_contratada,
                 'nombre' => (string)$folio->linea_contratada->nombre
             ],
-            'division' => is_null($folio->id_division) ? null : [ 
+            'division' => is_null($folio->id_division) ? null : [
                 'clave' => (int)$folio->id_division,
                 'nombre' => (string)$folio->division->nombre
             ],
-            'tienda' => is_null($folio->id_tienda) ? null : [ 
+            'tienda' => is_null($folio->id_tienda) ? null : [
                 'clave' => (int)$folio->id_tienda,
                 'nombre' => (string)$folio->tienda->nombre
             ],
-            'paquete' => is_null($folio->id_paquete) ? null : [ 
+            'paquete' => is_null($folio->id_paquete) ? null : [
                 'clave' => (int)$folio->id_paquete,
                 'nombre' => (string)$folio->paquete->nombre
             ],
-            'servicio' => is_null($folio->id_servicio) ? null : [ 
+            'servicio' => is_null($folio->id_servicio) ? null : [
                 'clave' => (int)$folio->id_servicio,
                 'nombre' => (string)$folio->servicio->nombre
             ],
-            'campana' => is_null($folio->id_campana) ? null : [ 
+            'campana' => is_null($folio->id_campana) ? null : [
                 'clave' => (int)$folio->id_campana,
                 'nombre' => (string)$folio->campana->nombre
             ],
-            'adeudo' => is_null($folio->id_adeudo) ? null : [ 
+            'adeudo' => is_null($folio->id_adeudo) ? null : [
                 'clave' => (int)$folio->id_adeudo,
                 'nombre' => (string)$folio->adeudo->nombre
             ],
-            'cliente' => is_null($folio->id_cliente) ? null : [ 
+            'cliente' => is_null($folio->id_cliente) ? null : [
                 'clave' => (int)$folio->id_cliente,
                 'nombre' => (string)$folio->cliente->nombre
             ],
-            'entretenimiento' => is_null($folio->id_entretenimiento) ? null : [ 
+            'entretenimiento' => is_null($folio->id_entretenimiento) ? null : [
                 'clave' => (int)$folio->id_entretenimiento,
                 'nombre' => (string)$folio->entretenimiento->nombre
             ],
-            'estrategia' => is_null($folio->id_estrategia) ? null : [ 
+            'estrategia' => is_null($folio->id_estrategia) ? null : [
                 'clave' => (int)$folio->id_estrategia,
                 'nombre' => (string)$folio->estrategia->nombre
-            ], 
-            'gasto' => is_null($folio->id_gasto) ? null : [ 
+            ],
+            'gasto' => is_null($folio->id_gasto) ? null : [
                 'clave' => (int)$folio->id_gasto,
                 'nombre' => (string)$folio->gasto->nombre
             ],
-            'giro' => is_null($folio->id_giro) ? null : [ 
+            'giro' => is_null($folio->id_giro) ? null : [
                 'clave' => (int)$folio->id_giro,
                 'nombre' => (string)$folio->giro->nombre
             ],
-            'rechazo' => is_null($folio->id_rechazo) ? null : [ 
+            'rechazo' => is_null($folio->id_rechazo) ? null : [
                 'clave' => (int)$folio->id_rechazo,
                 'nombre' => (string)$folio->rechazo->nombre
             ],
-            'traficoVoz' => is_null($folio->id_trafico_voz) ? null : [ 
+            'traficoVoz' => is_null($folio->id_trafico_voz) ? null : [
                 'clave' => (int)$folio->id_trafico_voz,
                 'nombre' => (string)$folio->trafico_voz->nombre
             ],
-            'validacion' => is_null($folio->id_validacion) ? null : [ 
+            'validacion' => is_null($folio->id_validacion) ? null : [
                 'clave' => (int)$folio->id_validacion,
                 'nombre' => (string)$folio->validacion->nombre
             ],
@@ -235,7 +236,7 @@ class FolioTransformer extends TransformerAbstract
 
     private function agregarOrdenes($folios_ordenes)
     {
-        if($folios_ordenes->isEmpty()) 
+        if ($folios_ordenes->isEmpty())
             return null;
 
         $arrayOrdenes = array();
@@ -251,10 +252,24 @@ class FolioTransformer extends TransformerAbstract
                 'fechaPosteoTV' => $folio_orden->orden->fecha_posteo_orden_tv
             ];
 
-            array_push($arrayOrdenes,$item);
+            array_push($arrayOrdenes, $item);
         }
 
-        return $arrayOrdenes;        
+        return $arrayOrdenes;
     }
-    
+
+    private function concatenarOrdenes($folios_ordenes)
+    {
+        if ($folios_ordenes->isEmpty())
+            return null;
+
+        $ordenes = '';
+        foreach ($folios_ordenes as $folio_orden) {
+            $ordenes .= $folio_orden->orden->numero_orden . ',';
+        }
+
+        $ordenes = rtrim($ordenes, ',');
+
+        return $ordenes;
+    }
 }
