@@ -52,7 +52,8 @@ Route::resource('servicios', 'Servicio\ServicioController', ['only' => ['index']
 	Usuarios
 */
 Route::resource('users', 'User\UserController', ['except' => ['create','edit']]);
-Route::post('users/validarcredenciales', 'User\UserController@validarCredenciales');
+Route::post('users/crearadmin', 'User\UserController@crearadmin');
+//Route::post('users/validarcredenciales', 'User\UserController@validarCredenciales');
 //Route::resource('users.folios', 'User\UserFolioController', ['except' => ['create', 'edit', 'store']]);
 
 /*

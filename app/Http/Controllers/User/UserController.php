@@ -15,7 +15,7 @@ class UserController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('transform.input:' . UserTransformer::class)->only(['store', 'update']);
+        $this->middleware('transform.input:' . UserTransformer::class)->only(['store', 'update', 'crearadmin']);
         $this->middleware('scope:administrador');
     }
 
@@ -177,19 +177,52 @@ class UserController extends ApiController
         return $this->showOne($user);
     }
 
-    public function validarCredenciales(Request $request)
+    public function crearadmin(Request $request)
     {
-
         $reglas = [
-            'username' => 'required'
+            'user_name' => 'required|regex:/^[A-Za-z]{6,}$/|unique:users,user_name,NULL,id_usuario,fecha_eliminacion,NULL|min:6',
+            'nombre' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
         ];
 
         $this->validate($request, $reglas);
 
-        if ($request->user()->user_name != $request->username) {
-            return response()->json(['error' => 'Token no valido', 'code' => 400], 400);
+        if (User::count() > 0) {
+            return $this->errorResponse('Esta funcion solo se permite para crear al prime   r usuario del sistema.', 409);
         }
 
-        return response()->json(['data' => 'Token valido.', 'code' => 200], 200);
+        $datos = $request->all();
+
+        $tipoUsuario = TipoUsuario::where('nombre', User::USER_ADMINISTRADOR)->first() ?? null;
+
+        if (!is_null($tipoUsuario)) {
+            $datos['id_empleado'] = null;
+            $datos['id_tipo_usuario'] = $tipoUsuario->id_tipo_usuario;
+        } else {
+            return $this->errorResponse('Error al encontrar la categoria de administrador.', 409);
+        }
+
+        $datos['password'] = bcrypt($request->password);
+
+        $usuario = User::create($datos);
+
+        return $this->showOne($usuario, 201);
     }
+
+
+    // public function validarCredenciales(Request $request)
+    // {
+
+    //     $reglas = [
+    //         'username' => 'required'
+    //     ];
+
+    //     $this->validate($request, $reglas);
+
+    //     if ($request->user()->user_name != $request->username) {
+    //         return response()->json(['error' => 'Token no valido', 'code' => 400], 400);
+    //     }
+
+    //     return response()->json(['data' => 'Token valido.', 'code' => 200], 200);
+    // }
 }
