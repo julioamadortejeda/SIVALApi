@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Folio;
 use Illuminate\Database\Eloquent\Model;
+use App\Transformers\DocumentoTransformer;
 
 /**
  * @property int $id_folio_documento
@@ -29,6 +30,7 @@ class Documento extends Model
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
     protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = DocumentoTransformer::class;
 
     /**
      * The primary key for the model.

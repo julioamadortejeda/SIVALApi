@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use App\Folio;
 use Illuminate\Database\Eloquent\Model;
+use App\Transformers\AudioTransformer;
 
 /**
  * @property int $id_folio_audio
@@ -29,6 +30,7 @@ class Audio extends Model
     const UPDATED_AT = 'fecha_modificacion';
     const DELETED_AT = 'fecha_eliminacion';
     protected $hidden = ['fecha_creacion','fecha_modificacion', 'fecha_eliminacion'];
+    public $transformer = AudioTransformer::class;
 
     /**
      * The primary key for the model.

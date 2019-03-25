@@ -14,7 +14,7 @@ class FolioAudioController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('scope:administrador')->only('index');
+        //$this->middleware('scope:administrador')->only('index');
         $this->middleware('scope:administrador,modificar-folios')->only(['store']);
     }
 
@@ -41,9 +41,9 @@ class FolioAudioController extends ApiController
         /******************************************************************************************
          * PENDIENTE VER SI ES NECESARIO LIGAR EL AUDIO A UN REGISTRO DE LA TABLA TELEFONOS
         /*****************************************************************************************/
-
+        //dd($request->audio);
         $reglas  =[
-            'audio' => 'required|mimetypes:mpga,application/octet-stream|max:10000'
+            'audio' => 'required|mimetypes:mpga,wav,audio/mpeg|max:10000'
         ];
 
         $this->validate($request, $reglas);

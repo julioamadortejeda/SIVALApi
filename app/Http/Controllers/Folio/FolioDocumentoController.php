@@ -14,7 +14,7 @@ class FolioDocumentoController extends ApiController
     {
         parent::__construct();
 
-        $this->middleware('scope:administrador')->only('index');
+        //$this->middleware('scope:administrador')->only('index');
         $this->middleware('scope:administrador,modificar-folios')->only(['store']);
     }
 
