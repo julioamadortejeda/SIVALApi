@@ -4,6 +4,7 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use App\Audio;
+use Illuminate\Support\Facades\Storage;
 
 class AudioTransformer extends TransformerAbstract
 {
@@ -14,10 +15,11 @@ class AudioTransformer extends TransformerAbstract
      */
     public function transform(Audio $audio)
     {
+        //dd(Storage::disk('public')->url('t.txt'));
         return [
             'clave' => (int)$audio->id_audio,
             'nombre' => (string)$audio->nombre,
-            'link' => (string)$audio->ruta,
+            'link' => Storage::disk('custom')->url($audio->id_folio . '/audios/' . $audio->ruta),
             'fechaCreacion' => (string)$audio->fecha_creacion,
             'fechaActualizacion' => (string)$audio->fecha_modificacion,
             'fechaEliminacion' => isset($audio->fecha_eliminacion) ? (string)$audio->fecha_eliminacion : null
