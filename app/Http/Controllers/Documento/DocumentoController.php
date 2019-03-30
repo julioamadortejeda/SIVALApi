@@ -24,7 +24,7 @@ class DocumentoController extends ApiController
      */
     public function destroy(Documento $documento)
     {   
-        $ruta = $documento->id_folio . "/Documentos/" . $documento->ruta;
+        $ruta = $documento->id_folio . "/documentos/" . $documento->ruta;
         if(!Storage::delete($ruta))
             return $this->errorResponse('No se pudo encontrar el archivo a eliminar.', 404);
 
