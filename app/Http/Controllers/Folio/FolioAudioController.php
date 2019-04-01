@@ -46,7 +46,7 @@ class FolioAudioController extends ApiController
             'audio' => 'required|mimetypes:mpga,wav,audio/mpeg|max:10000'
         ];
 
-        $this->validate($request, $reglas);
+        //$this->validate($request, $reglas);
 
         $datos['nombre'] = date('d-m-Y H:i:s'); //REVISAR SI EL NOMBRE DEL AUDIO SE QUEDA CON LA FECHA O SE CAMBIA
         $ruta =  $request->audio->storeAs('', $folio->id_folio
