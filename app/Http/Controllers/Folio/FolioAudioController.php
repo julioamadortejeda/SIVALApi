@@ -7,6 +7,7 @@ use App\Folio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Storage;
 
 class FolioAudioController extends ApiController
 {
@@ -42,17 +43,25 @@ class FolioAudioController extends ApiController
          * PENDIENTE VER SI ES NECESARIO LIGAR EL AUDIO A UN REGISTRO DE LA TABLA TELEFONOS
         /*****************************************************************************************/
         //dd($request->audio);
-        $reglas  =[
-            'audio' => 'required|mimetypes:mpga,wav,audio/mpeg|max:10000'
+        $reglas  = [
+            'audio' => 'required|mimetypes:mpga,wav,audio/mpeg|max:50000'
         ];
 
         //$this->validate($request, $reglas);
+        $data = explode(';base64,', $request->audio);
+        $data = base64_decode($data[1]);
+        //$file = file_put_contents(storage_path() . '/audiootro.wav', $data);
+        //Storage::put('audiotest.mp3', $data);
 
         $datos['nombre'] = date('d-m-Y H:i:s'); //REVISAR SI EL NOMBRE DEL AUDIO SE QUEDA CON LA FECHA O SE CAMBIA
-        $ruta =  $request->audio->storeAs('', $folio->id_folio
-                . "/audios/" . str_random(40) . '.' . $request->audio->getClientOriginalExtension());
-        $ruta = str_replace($folio->id_folio . "/audios/", '', $ruta);
-        $datos['ruta'] = $ruta;
+        $nombreRandom =  str_random(40) . '.mp3';
+        Storage::put($folio->id_folio . "/audios/" . $nombreRandom, $data);
+
+        // $ruta =  $request->audio->storeAs('', $folio->id_folio
+        //     . "/audios/" . str_random(40) . '.mp3');
+        // $ruta = str_replace($folio->id_folio . "/audios/", '', $ruta);
+
+        $datos['ruta'] = $nombreRandom;
         $datos['id_folio'] = $folio->id_folio;
         $datos['id_usuario'] = $request->user()->id_usuario;
 

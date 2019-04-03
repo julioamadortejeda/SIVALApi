@@ -130,8 +130,8 @@ class Handler extends ExceptionHandler
         }
 
         if (config('app.debug')) {
-            //dd($exception);
-            //return $this->errorResponse('Falla insesperada. Intente mas tarde.', 500);
+            dd($exception);
+            return $this->errorResponse($exception, 500);
             return parent::render($request, $exception);
         }
 
