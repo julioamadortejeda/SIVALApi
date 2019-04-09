@@ -44,29 +44,36 @@ class FolioAudioController extends ApiController
         /*****************************************************************************************/
         //dd($request->audio);
         $reglas  = [
-            'audio' => 'required|mimetypes:mpga,wav,audio/mpeg|max:50000'
+            'audio' => 'required|max:100000000'
         ];
 
-        //$this->validate($request, $reglas);
-        $data = explode(';base64,', $request->audio);
-        $data = base64_decode($data[1]);
-        //$file = file_put_contents(storage_path() . '/audiootro.wav', $data);
-        //Storage::put('audiotest.mp3', $data);
+        $this->validate($request, $reglas);
 
-        $datos['nombre'] = date('d-m-Y H:i:s'); //REVISAR SI EL NOMBRE DEL AUDIO SE QUEDA CON LA FECHA O SE CAMBIA
-        $nombreRandom =  str_random(40) . '.mp3';
-        Storage::put($folio->id_folio . "/audios/" . $nombreRandom, $data);
+        try {
+            $data = explode(';base64,', $request->audio);
+            $data = base64_decode($data[1]);
+            //$file = file_put_contents(storage_path() . '/audiootro.wav', $data);
+            //Storage::put('audiotest.mp3', $data);
 
-        // $ruta =  $request->audio->storeAs('', $folio->id_folio
-        //     . "/audios/" . str_random(40) . '.mp3');
-        // $ruta = str_replace($folio->id_folio . "/audios/", '', $ruta);
+            $datos['nombre'] = date('d-m-Y H:i:s'); //REVISAR SI EL NOMBRE DEL AUDIO SE QUEDA CON LA FECHA O SE CAMBIA
+            $nombreRandom =  str_random(40) . '.mp3';
+            Storage::put($folio->id_folio . "/audios/" . $nombreRandom, $data);
 
-        $datos['ruta'] = $nombreRandom;
-        $datos['id_folio'] = $folio->id_folio;
-        $datos['id_usuario'] = $request->user()->id_usuario;
+            // $ruta =  $request->audio->storeAs('', $folio->id_folio
+            //     . "/audios/" . str_random(40) . '.mp3');
+            // $ruta = str_replace($folio->id_folio . "/audios/", '', $ruta);
 
-        $audio = Audio::create($datos);
+            $datos['ruta'] = $nombreRandom;
+            $datos['id_folio'] = $folio->id_folio;
+            $datos['id_usuario'] = $request->user()->id_usuario;
 
-        return $this->showOne($audio, 201);
+            $audio = Audio::create($datos);
+
+            return $this->showOne($audio, 201);
+        } catch (\Throwable $th) {
+            dd($th);
+            return $this->errorResponse($th, 400);
+            //throw $th;
+        }
     }
 }

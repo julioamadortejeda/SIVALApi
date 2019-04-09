@@ -24,7 +24,7 @@ class AudioController extends ApiController
      */
     public function destroy(Audio $audio)
     {
-        $ruta = $audio->id_folio . "/Audios/" . $audio->ruta;
+        $ruta = $audio->id_folio . "/audios/" . $audio->ruta;
         if(!Storage::delete($ruta))
             return $this->errorResponse('No se pudo encontrar el audio a eliminar.', 404);
 
