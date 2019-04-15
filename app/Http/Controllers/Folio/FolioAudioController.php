@@ -51,6 +51,7 @@ class FolioAudioController extends ApiController
 
         try {
             $data = explode(';base64,', $request->audio);
+            return $this->errorResponse($data, 400);
             $data = base64_decode($data[1]);
             //$file = file_put_contents(storage_path() . '/audiootro.wav', $data);
             //Storage::put('audiotest.mp3', $data);
