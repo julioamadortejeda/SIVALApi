@@ -43,19 +43,38 @@ class FolioDocumentoController extends ApiController
             'documentos.*' => 'max:3000|mimes:pdf,jpeg,jpg,png',
         ];
 
+        return $this->errorResponse($_FILES, 409);
+
+        if ($request->hasFile('documentos[]')) {
+            return $this->errorResponse($request->all(), 400);
+        }
+
+        if ($request->hasFile('documentos')) {
+            return $this->errorResponse($request->all(), 401);
+        }
+
+        if (!$request->hasFile('documentos')) {
+            return $this->errorResponse($request->all(), 402);
+        }
+
         $this->validate($request, $reglas);
+        //dump($request);
+        try {
+            $documentos = collect();
+            foreach ($request->documentos as $documento) {
+                $ruta = $documento->store($folio->id_folio . '/Documentos');
+                $ruta = str_replace($folio->id_folio . "/Documentos/", '', $ruta);
+                $datos['nombre'] = $documento->getClientOriginalName();
+                $datos['ruta'] = $ruta;
+                $datos['id_folio'] = $folio->id_folio;
+                $datos['id_usuario'] = $request->user()->id_usuario;
 
-        $documentos = collect();
-        foreach ($request->documentos as $documento) {
-            $ruta = $documento->store($folio->id_folio . '/Documentos');
-            $ruta = str_replace($folio->id_folio . "/Documentos/", '', $ruta);
-            $datos['nombre'] = $documento->getClientOriginalName();
-            $datos['ruta'] = $ruta;
-            $datos['id_folio'] = $folio->id_folio;
-            $datos['id_usuario'] = $request->user()->id_usuario;
-
-            $doc = Documento::create($datos);
-            $documentos->push($doc);
+                $doc = Documento::create($datos);
+                $documentos->push($doc);
+            }
+        } catch (\Throwable $th) {
+            return $this->errorResponse($th, 400);
+            //throw $th;
         }
 
         return $this->showAll($documentos, 201);
