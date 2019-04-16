@@ -7,6 +7,8 @@ use App\Documento;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Controllers\ApiController;
+use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class FolioDocumentoController extends ApiController
 {
@@ -45,65 +47,35 @@ class FolioDocumentoController extends ApiController
         ];
 
         $this->validate($request, $reglas);
-        return $this->errorResponse($request->documentos, 400);
+        //return $this->errorResponse($request->documentos, 400);
 
         try {
+
             $imageTypes = array('image/jpeg', 'image/jpg', 'image/png');
+            $documentos = collect();
 
             foreach ($request->documentos as $image) {
-                if (!in_array($image->type, $imageTypes)) {
+                if (!in_array($image['type'], $imageTypes)) {
                     return $this->errorResponse('Tipo de archivo no permitido.', 422);
                 }
-            }
-            $ruta = $documento->store($folio->id_folio . '/Documentos');
-            $ruta = str_replace($folio->id_folio . "/Documentos/", '', $ruta);
-            $datos['nombre'] = $documento->getClientOriginalName();
-            $datos['ruta'] = $ruta;
-            $datos['id_folio'] = $folio->id_folio;
-            $datos['id_usuario'] = $request->user()->id_usuario;
 
-            $doc = Documento::create($datos);
-            $documentos->push($doc);
+                $data = base64_decode($image['value']);
+                $imgType = str_replace('image/', '', $image['type']);
+                $nombreRandom = str_random(40) . '.jpg';
+                Storage::put($folio->id_folio . "/documentos/" . $nombreRandom, $data);
 
-            $datos['nombre'] = date('d-m-Y H:i:s'); //REVISAR SI EL NOMBRE DEL AUDIO SE QUEDA CON LA FECHA O SE CAMBIA
-            $nombreRandom = str_random(40) . '.mp3';
-            Storage::put($folio->id_folio . "/documentos/" . $nombreRandom, $data);
-
-            // $ruta =  $request->audio->storeAs('', $folio->id_folio
-            //     . "/audios/" . str_random(40) . '.mp3');
-            // $ruta = str_replace($folio->id_folio . "/audios/", '', $ruta);
-
-            $datos['ruta'] = $nombreRandom;
-            $datos['id_folio'] = $folio->id_folio;
-            $datos['id_usuario'] = $request->user()->id_usuario;
-
-            $audio = Audio::create($datos);
-
-            return $this->showOne($audio, 201);
-        } catch (\Throwable $th) {
-            dd($th);
-            return $this->errorResponse($th, 400);
-            //throw $th;
-        }
-
-        try {
-            $documentos = collect();
-            foreach ($request->documentos as $documento) {
-                $ruta = $documento->store($folio->id_folio . '/Documentos');
-                $ruta = str_replace($folio->id_folio . "/Documentos/", '', $ruta);
-                $datos['nombre'] = $documento->getClientOriginalName();
-                $datos['ruta'] = $ruta;
+                $datos['nombre'] = $image['name'];
+                $datos['ruta'] = $nombreRandom;
                 $datos['id_folio'] = $folio->id_folio;
                 $datos['id_usuario'] = $request->user()->id_usuario;
 
                 $doc = Documento::create($datos);
                 $documentos->push($doc);
             }
-        } catch (\Throwable $th) {
-            return $this->errorResponse($th, 400);
-            //throw $th;
-        }
+            return $this->showAll($documentos, 201);
 
-        return $this->showAll($documentos, 201);
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 412);
+        }
     }
 }

@@ -51,18 +51,11 @@ class FolioAudioController extends ApiController
 
         try {
             $data = explode(';base64,', $request->audio);
-            return $this->errorResponse($data, 400);
             $data = base64_decode($data[1]);
-            //$file = file_put_contents(storage_path() . '/audiootro.wav', $data);
-            //Storage::put('audiotest.mp3', $data);
-
+            //return $this->errorResponse($data, 422);
             $datos['nombre'] = date('d-m-Y H:i:s'); //REVISAR SI EL NOMBRE DEL AUDIO SE QUEDA CON LA FECHA O SE CAMBIA
             $nombreRandom =  str_random(40) . '.mp3';
             Storage::put($folio->id_folio . "/audios/" . $nombreRandom, $data);
-
-            // $ruta =  $request->audio->storeAs('', $folio->id_folio
-            //     . "/audios/" . str_random(40) . '.mp3');
-            // $ruta = str_replace($folio->id_folio . "/audios/", '', $ruta);
 
             $datos['ruta'] = $nombreRandom;
             $datos['id_folio'] = $folio->id_folio;
@@ -71,9 +64,9 @@ class FolioAudioController extends ApiController
             $audio = Audio::create($datos);
 
             return $this->showOne($audio, 201);
-        } catch (\Throwable $th) {
-            dd($th);
-            return $this->errorResponse($th, 400);
+            
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 422);
             //throw $th;
         }
     }
