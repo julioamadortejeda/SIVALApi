@@ -48,16 +48,12 @@ class FolioDocumentoController extends ApiController
         return $this->errorResponse($request->documentos, 400);
 
         try {
-            $imageTypes = array('jpeg', 'jpg', 'png');
-            foreach ($request->documentos as $image) {
-                $data = explode(';base64,', $request->audio);
-                $stringtype = str_replace('data:/image', $data[0]);
+            $imageTypes = array('image/jpeg', 'image/jpg', 'image/png');
 
-                if (!in_array($stringtype, $imageTypes)) {
+            foreach ($request->documentos as $image) {
+                if (!in_array($image->type, $imageTypes)) {
                     return $this->errorResponse('Tipo de archivo no permitido.', 422);
                 }
-
-                $data = base64_decode($data[1]);
             }
             $ruta = $documento->store($folio->id_folio . '/Documentos');
             $ruta = str_replace($folio->id_folio . "/Documentos/", '', $ruta);
