@@ -188,7 +188,7 @@ class UserController extends ApiController
         $this->validate($request, $reglas);
 
         if (User::count() > 0) {
-            return $this->errorResponse('Esta funcion solo se permite para crear al prime   r usuario del sistema.', 409);
+            return $this->errorResponse('Esta funcion solo se permite para crear al primer usuario del sistema.', 422);
         }
 
         $datos = $request->all();
