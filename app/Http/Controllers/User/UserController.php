@@ -16,7 +16,7 @@ class UserController extends ApiController
         parent::__construct();
 
         $this->middleware('transform.input:' . UserTransformer::class)->only(['store', 'update', 'crearadmin']);
-        $this->middleware('scope:administrador');
+        $this->middleware('scope:administrador')->except('crearadmin');
     }
 
     /**

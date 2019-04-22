@@ -16,7 +16,7 @@ class UserTransformer extends TransformerAbstract
     {
         return [
             'clave' => (int)$user->id_usuario,
-            'userName' => (string)$user->user_name,
+            'username' => (string)$user->user_name,
             'nombre' => (string)$user->nombre,
             'empleado' => is_null($user->empleado) ? null : [ 
                 'clave' => (int)$user->id_empleado,
@@ -38,7 +38,7 @@ class UserTransformer extends TransformerAbstract
     {
         $attribute = [
             'clave' => 'id_usuario',
-            'userName' => 'user_name',
+            'username' => 'user_name',
             'nombre' => 'nombre',
             'empleado' => 'id_empleado',
             'contraseña' => 'password',
@@ -56,7 +56,7 @@ class UserTransformer extends TransformerAbstract
     {
         $attribute = [
             'id_usuario' => 'clave',
-            'user_name' => 'userName',
+            'user_name' => 'username',
             'nombre' => 'nombre',
             'id_empleado' => 'empleado',
             'password' => 'contraseña',

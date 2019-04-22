@@ -133,7 +133,7 @@ class Handler extends ExceptionHandler
             }
 
             if ($codigo == 1062) {
-                dd($exception);
+                //dd($exception);
                 return $this->errorResponse('Ya existe un registro con los mismos datos.', 409);
             }
         }
